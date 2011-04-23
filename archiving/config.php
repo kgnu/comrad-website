@@ -17,4 +17,7 @@
 	//the extra time, in seconds, to record for
 	//For example, if Afternoon Sound Alternative ends at 3:00 PM and this value is set to 5 * 60 seconds, the recording will end at 3:05 PM.
 	$extraRecordingTime = 5 * 60;
+	
+	//the number of seconds after which to reconnect to the stream if the stream "hangs" and stops sending data
+	$timeout = 60;
 ?>

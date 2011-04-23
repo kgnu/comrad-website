@@ -19,6 +19,10 @@
 	$init = new Initialize();
 	$init->setAutoload();
 	
+	//disable authorization
+	$pm = PermissionManager::getInstance();
+	$pm->disableAuthorization();
+	
 	//get all events in the next day
 	$em = EventManager::getInstance();
 	$events = $em->getEventsBetween(time(), time() + 60*60*24);
@@ -32,8 +36,9 @@
 		//if we're supposed to record the event, store the event in the text file
 		if ($event->RecordAudio) {
 			$startTime = $scheduledEventInstance->StartDateTime;
+			$recordingStartTime = $startTime + ($scheduledEventInstance->ScheduledEvent->RecordingOffset * 60);
 			$endTime = $startTime + ($scheduledEventInstance->Duration * 60);
-			$upcomingEvents .= $event->Title . "|" . $startTime  . "|" . $endTime . "\n";
+			$upcomingEvents .= $event->Title . "|" . $recordingStartTime  . "|" . $endTime .  "|" . $startTime . "\n";
 		}
 	}
 	
@@ -41,4 +46,5 @@
 	$fh = fopen($upcomingEventsFile,'w');
 	fwrite($fh,$upcomingEvents);
 	fclose($fh);
+	
 ?>
