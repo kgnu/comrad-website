@@ -1,12 +1,12 @@
 <?php
-	//config.php - configuration variables for the archiving script
+	//archivingConfig.php - configuration variables for the archiving script
 	//sw 4/21/11
 	
 	//the path to the root of the comrad-dev folder
-	$root = "../../../"; 
+	$root = "/home/comrad/comrad-dev/"; 
 	
 	//the path of the log file to store all script output
-	$logFile = "/srv2/www/kgnu/audioarchives/archivingLog.txt";
+	$logFile = "/srv2/www/cgi-bin/archivingLog.txt";
 	
 	//the maximum number of lines for the log file
 	$logFileMaxLines = 10000;
@@ -26,7 +26,7 @@
 	$httpDestination = "http://kgnu.net/audioarchives/";
 	
 	//the destination folder to store RSS feeds
-	$rssFilePath = "/srv2/www/kgnu/audioarchives"; 
+	$rssFilePath = "/srv2/www/kgnu/podcasts/"; 
 	
 	//the temporary recording location streamripper will use to record the file - after the file is done recording, it
 	//will move the file to the permanent destination specified above
