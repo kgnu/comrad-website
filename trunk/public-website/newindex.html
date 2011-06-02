@@ -1,0 +1,1262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- // THIS PAGE IS GENERATED AUTOMATICALLY: DO NOT EDIT IT. Edit instead the index_template.html page -->
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>KGNU Independent Community Radio / 88.5 FM & 1390 AM (Boulder / Denver) / 93.7 FM (Nederland)</title>
+		<meta name="keywords" content="KGNU independent commmunity radio, Boulder, Denver, Free-form, Freeform, Free Form Music, BBC news, Democracy Now, Reggae Bloodlines, Honky Tonk Heroes, Old Grass Gnu Grass, Bluegrass, radio, community radio, Ragtime America">
+		<meta name="description" content="KGNU Independent Community Radio broadcasting at 88.5 FM in Boulder and 1390 AM in Denver. Listener supported, volunteer powered community radio.">
+		<META name="verify-v1" content="+puZM4YBac9YXeqlsUo0amK5WHLvMOt6bJQdFGP13dM=">
+		<link rel="shortcut icon" href="favicon.ico">
+		<!-- <link rel="alternate" href="kgnu.rss" type="application/rss+xml" title="KGNU RSS Feed"> -->
+		<link rel="stylesheet" type="text/css" href="css/menustyle.css" media="screen, print">
+		<script language="javascript" type="text/javascript" src="js/thermometer.js"></script>
+		<script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+		
+    <script type="text/javascript" src="js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="js/jquery/ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/jquery/json/jquery.json.js"></script>
+    <script type='text/javascript' src='js/date/format/date.format.js'></script>
+
+	<style type="text/css">
+		/* sw 5/30/11 - set font for entire page */
+		body {
+			font-family:Arial, sans-serif;
+		}
+		/* sw 5/29/11 - style for the right column */
+		.show {
+			 /*margin-left: -35px; */
+			 padding-bottom:8px;
+			 border-bottom:thin dotted #555555;
+			 overflow:hidden;
+		}
+		* html .show { height:1%; } /* clear floats in ie6 */
+		#on_now_content ul {
+			margin:30px 36px;
+			padding-left:0;
+		}
+		.on_now_header, .coming_up_header {
+			font-weight:bold; 
+			background-color: #F8F8E0; 
+			color: #009999; 
+			border-bottom:1px solid #555555;
+			/*margin-left:-35px;*/
+			font-size:10pt;
+		}
+		#coming_up_content ul {
+			margin:0 36px 15px;
+			padding-left:0;
+		}
+		#on_now_content li, #coming_up_content li {
+			font-size:9pt;
+		}
+		.show div {
+			padding-left:15px;
+		}
+		.show .show_title, .show .show_title a {
+			font-weight:bold; 
+			color: #009999;
+			font-size:10pt;
+			padding-top:8px;
+			padding-left:0;
+			padding-bottom:7px;
+			line-height:14px;
+			text-decoration: none;
+		}
+		.show .show_url {
+			font-size:8pt;
+			padding-left:0;
+			font-weight:normal;
+		}
+		.show a img {
+			border:none;
+			outline:none;
+		}
+		.info {
+			position:relative;
+			top:5px;
+		}
+		.float_container {
+			overflow:hidden;
+		}
+		* html .float_container { height:1%; } /* clear floats in IE6 */
+		.float_right {
+			float:right;
+			display:inline; /* fix double margin bug in ie6 */
+		}
+	</style>
+	
+
+  <script type="text/javascript">
+  /* <![CDATA[ */
+
+               
+  function populateOnNow () {
+
+	    $.get('http://kgnu.net/playlist/ajax/geteventsoccurringattime.php', {
+	      types: $.toJSON([ 'Show' ])
+	    }, function(results) {
+
+	      if (!results) {
+	        return;
+	      }
+
+	      results.sort(function(a, b) {
+	        return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
+	      });
+
+	      $('#on_now_content').empty();
+	      var dateContainer;
+	      var list;
+	      $.each(results, function(index, value) {
+
+	        var title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
+
+	        /**
+	         * Get the Show Short Description
+	         */
+	        var shortDescription;
+	        if (value.Attributes.ShortDescription) {
+	          shortDescription = value.Attributes.ShortDescription;
+	        }
+	        if (!shortDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) {
+	          shortDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription;
+	        }
+
+	        /**
+	         * Get the Show Long Description
+	         */
+	        var longDescription;
+	        if (value.Attributes.LongDescription) {
+	          longDescription = value.Attributes.LongDescription;
+	        }
+	        if (!longDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) {
+	          longDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription;
+	        }
+
+	        /**
+	         * Get the Host ID and name
+	         */
+	        var hostId;
+	        var hostName;
+			if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Source == "KGNU") { //only get the host name for KGNU shows
+				if (value.Attributes.HostId) {
+				  hostId = value.Attributes.HostId;
+				}
+				if (!hostId && value.Attributes.Host && value.Attributes.Host.Attributes.UID) {
+				  hostId = value.Attributes.Host.Attributes.UID;
+				}
+				if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId) {
+				  hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId;
+				}
+				if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
+				  hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.UID;
+				}
+
+				//host name
+			
+				if (value.Attributes.Host && value.Attributes.Host.Attributes.Name) {
+				  hostName = value.Attributes.Host.Attributes.Name;
+				}
+				if (!hostName && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
+				  hostName = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.Name;
+				}
+			}
+			
+			/** 
+			 * Format the start date and end date
+			 */
+			 //sw 5/29/11 - commented out this section...we won't show the time on "On Now" shows
+			/*var startTime = new Date(value.Attributes.StartDateTime * 1000);
+	        var duration = value.Attributes.Duration;
+	        var endTime = new Date(startTime.getTime() + duration * 60 * 1000);
+	        //var startDay = startTime.getDay(); //returns zero - use getDate instead (sw 5/29/11)
+	        var startDate = startTime.getDate();
+	        var startMonth = startTime.getMonth();
+	        startMonth++;
+	        var startYear = startTime.getFullYear();*/
+			
+			
+
+	        /**
+	         *
+	         */
+	        var hostURL;
+	        if (hostId && hostName) {
+	        hostURL = "<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
+	                  "\" title=\"Click for all " + hostName + "'s shows\">" + hostName + "</a>"; 
+	        }
+	        if (hostURL) {
+	          hostName = hostURL;
+	        }
+
+	        if (list == undefined) {
+	          $('#on_now_content').append(list = $('<ul style="list-style: none"><div class="on_now_header">On Now</div></ul>'));
+	        }
+			
+			//sw 5/30/11 - if the show is produced by KGNU, show the "More Info" link
+			var moreInfoLink = "";
+			if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Source == "KGNU") {
+				moreInfoLink = '<a class="float_right info" href="shows.php"><img src="graphics/moreinfoicon.gif" /></a>';
+			}
+
+	        list.append(
+	          $('<li></li>').append('<div class="show">' +
+									moreInfoLink +
+									'<div class="show_title">' + 
+										title + 
+									'</div>' +
+									(!hostName?"": '<div>Host: ' + hostName + '</div>') +
+									'<div>' + shortDescription + '</div>' +
+									'</div')
+	          );
+
+	      }
+	      );
+	    }, 'jsonp');
+  }
+               
+               
+               
+  function populateShows(start, end)
+  {
+
+    var d_names = new Array("Sunday", "Monday", "Tuesday",
+        "Wednesday", "Thursday", "Friday", "Saturday");
+
+    $.get('http://kgnu.net/playlist/ajax/geteventsbetween.php', {
+      start: start,
+      end: end,
+      types: $.toJSON([ 'Show' ])
+    }, function(results) {
+
+      if (!results) {
+        return;
+      }
+
+      results.sort(function(a, b) {
+        return a.Attributes.StartDateTime - b.Attributes.StartDateTime;
+      });
+
+      $('#coming_up_content').empty();
+      var dateContainer;
+      var list;
+      $.each(results, function(index, value) {
+		
+		//sw 5/29/11 - do not write out the first show in the index - this is actually the current show, which is already displayed
+		//in the "On Now" section
+		if (index == 0) {
+			return;
+		}
+		
+        var title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
+
+        /**
+         * Get the Show Short Description
+         */
+        var shortDescription;
+        if (value.Attributes.ShortDescription) {
+          shortDescription = value.Attributes.ShortDescription;
+        }
+        if (!shortDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) {
+          shortDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription;
+        }
+
+        /**
+         * Get the Show Long Description
+         */
+        var longDescription;
+        if (value.Attributes.LongDescription) {
+          longDescription = value.Attributes.LongDescription;
+        }
+        if (!longDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) {
+          longDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription;
+        }
+
+        /**
+         * Get the Host ID and name
+         */
+        var hostId;
+		var hostName;
+		if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Source == "KGNU") { //only get the host name and id for KGNU shows
+			if (value.Attributes.HostId) {
+			  hostId = value.Attributes.HostId;
+			}
+			if (!hostId && value.Attributes.Host && value.Attributes.Host.Attributes.UID) {
+			  hostId = value.Attributes.Host.Attributes.UID;
+			}
+			if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId) {
+			  hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId;
+			}
+			if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
+			  hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.UID;
+			}
+
+		
+			if (value.Attributes.Host && value.Attributes.Host.Attributes.Name) {
+			  hostName = value.Attributes.Host.Attributes.Name;
+			}
+			if (!hostName && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
+			  hostName = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.Name;
+			}
+		}
+			
+		/**
+		 * Get the date/time the show is on
+		 */
+		if (value.Attributes.StartDateTime) {
+			var startTime = new Date(value.Attributes.StartDateTime * 1000);
+			var duration = value.Attributes.Duration;
+			var endTime = new Date(value.Attributes.StartDateTime * 1000 + duration * 60 * 1000);
+			var startDay = startTime.getDate();
+			var startMonth = startTime.getMonth();
+			var startHours = startTime.getHours();
+			var startYear = startTime.getFullYear();
+			var currentDate = new Date();
+			var currentDay = currentDate.getDate();
+			var currentMonth = currentDate.getMonth();
+			var currentYear = currentDate.getFullYear();
+			var timeString = "";
+			if (currentDay == startDay &&
+				currentMonth == startMonth &&
+				currentYear == startYear) { //show starts today
+				timeString = "Today from " + getHourAndMinute(startTime) + " to " + getHourAndMinute(endTime);
+			} else if (startHours == 0 && startDay == currentDay + 1) {
+				timeString = "Tonight from " + getHourAndMinute(startTime) + " to " + getHourAndMinute(endTime);
+			} else if (startDay == currentDay + 1) {
+				timeString = "Tomorrow from " + getHourAndMinute(startTime) + " to " + getHourAndMinute(endTime);
+			} else {
+				var months = new Array("January", "Febuary", "March", "April", "May", 
+					"June", "July", "August", "September", "October", "November", "December");
+				timeString = months[startTime.getMonth()] + " " + startTime.getDate() + " from " + getHourAndMinute(startTime) + " to " + getHourAndMinute(endTime);
+			}
+		}
+		
+		/**
+		 * Get the show URL
+		 */
+		var showUrl;
+		if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL) {
+			showUrl = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL;
+			if (showUrl.indexOf("http") != 0) { //if the URL doesn't begin with http://, prepend http://kgnu.org/
+				showUrl = "http://kgnu.org/" + showUrl;
+			}
+		}
+
+        /**
+         *
+         */
+        var hostURL;
+        if (hostId && hostName) {
+        hostURL = "<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
+                  "\" title=\"Click for all " + hostName + "'s shows\">" + hostName + "</a>"; 
+        }
+        if (hostURL) {
+          hostName = hostURL;
+        }
+
+        if (list == undefined) {
+          $('#coming_up_content').append(list = $('<ul style="width: 295px; list-style: none">' +
+													'<div class="coming_up_header">Coming Up</div></ul>'));
+        }
+
+        list.append(
+          $('<li></li>').append('<div class="show">' +
+							    '<div class="show_title">' + 
+									(!showUrl ? "" : '<a href="' + showUrl + '">' + title + '</a>') +
+								'</div>' +
+								'<div>' + timeString + '</div>' +
+								(!hostName?"": "<div>Host: " + hostName + "</div>") +
+								'<div>' + shortDescription + '</div>' +
+								'</div>')
+          );
+      }
+      );
+    }, 'jsonp');
+  }
+
+  $(function() { 
+    // Populate the default date range...
+	    var now = new Date();
+        var nowStr = now.format("yyyy-mm-dd HH:MM:ss");
+		//get all events in the next day
+	    var then = new Date(now.getTime() + 1000 * 60 * 60 * 24 * 2); 
+		var thenStr = then.format("yyyy-mm-dd HH:MM:ss");
+	    populateShows(nowStr, thenStr);
+	    populateOnNow ();
+  });
+  
+  //sw 5/29/11 - take a Date object and return the time in a HH:MM PM/AM format
+  function getHourAndMinute(date) {
+	var amPm;
+	var hour;
+	if (date.getHours() == 0) {
+		amPm = "AM";
+		hour = "12";
+	} else if (date.getHours() > 0 && date.getHours() < 12) {
+		amPm = "AM";
+		hour = date.getHours();
+	} else if (date.getHours() == 12) {
+		amPm = "PM";
+		hour = "12";
+	} else {
+		amPm = "PM";
+		hour = date.getHours() - 12;
+	}
+	var minutes;
+	if (date.getMinutes() < 10) {
+		minutes = "0" + date.getMinutes();
+	} else {
+		minutes = date.getMinutes();
+	}
+	return hour + ":" + minutes + " " + amPm;
+  }
+
+  /* ]]> */
+  </script>
+<noscript>JavaScript is NOT required to navigate this page</noscript>
+  
+  
+	</head>
+
+	<!--// BROWSER NOTES -->
+	<!-- the <TD WIDTH=1> statements are so that Netscape won't add 1 or 2 extra pixels to the width of a cell -->
+	<!-- don't leave any space characters between <A> and </A>, or Netscape and Opera will add an underlined blank charater -->
+	<!-- TDs with an image must be written all in one line, else Netscape and IE add 5 pixels below a cell -->
+
+	<body bgcolor="#F8F8E0">
+
+		<!-- // ACCESSIBILITY -->
+		<a href="#content" ><img src="dot.gif" alt="skip to content" border=0 width=1 height=1></a>
+
+
+	
+
+	
+		<!-- // LINKS AND CONTENT -->
+		<table width="100%" border=0 cellspacing=0 cellpadding=5>
+			<tr>
+				<td width="1%" valign="top"><!--// LEFT LINKS -->
+					<table width="100%" border=0 cellspacing=0 cellpadding=0>
+						<tr>
+							<td><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=10 border=0 align="none"></td>
+						</tr>
+						<tr>
+							<td><img src="http://www.kgnu.org/music/newbanner/tan-color-logo-new.gif" alt="" border=0 height=93 width=120></td>
+						</tr>
+						<tr> 
+							<td>
+								<table border=0 cellpadding=0 cellspacing=0>
+									<tr>
+										<td height="190">
+
+											<img src="./btns/btn1.gif" alt="home" border=0 width=175 height=22 name="btn1" vspace=1><br><br>
+									      <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="./btns/btn2.gif" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a><br>
+                                            <a href="/ht/support.html" onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="./btns/btn3.gif" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a><br>
+                                            <a href="/ht/volunteer.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="./btns/btn4.gif" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a><br>
+                                            <a href="/ht/buy.html" onMouseOver="GoIn(5);" onMouseOut="GoOut(5);"><img src="./btns/btn5.gif" alt="buy our stuff" border=0 width=175 height=22 name="btn5" vspace=1></a><br>
+                                        <a href="/ht/submit.html" onMouseOver="GoIn(6);" onMouseOut="GoOut(6);"><img src="./btns/btn6.gif" alt="submit stuff" border=0 width=175 height=22 name="btn6" vspace=1></a><br>
+                                        <a href="/ht/contact.html" onMouseOver="GoIn(7);" onMouseOut="GoOut(7);"><img src="./btns/btn7.gif" alt="contact us" border=0 width=175 height=22 name="btn7" vspace=1></a><br>
+                                        <a href="/ht/showslist.html" onMouseOver="GoIn(8);" onMouseOut="GoOut(8);"><img src="./btns/btn8.gif" alt="our shows" border=0 width=175 height=22 name="btn8" vspace=1></a><br>
+                                        <a href="/ht/services.html" onMouseOver="GoIn(9);" onMouseOut="GoOut(9);"><img src="./btns/btn9.gif" alt="our services" border=0 width=175 height=22 name="btn9" vspace=1></a><br>
+                                        <a href="/ht/aboutus.html" onMouseOver="GoIn(10);" onMouseOut="GoOut(10);"><img src="./btns/btn10.gif" alt="about us" border=0 width=175 height=22 name="btn10" vspace=1></a><br>
+                                        <a href="/ht/calendarsonline.html" onMouseOver="GoIn(11);" onMouseOut="GoOut(11);"><img src="./btns/btn11.gif" alt="calendars" border=0 width="175" height="22" name="btn11" vspace=1></a><br><br><img src="http://www.kgnu.org/dot.gif" alt="" width=6 height=1 border=0 align="none">
+                                        <a href="http://www.twitter.com/KGNU" target="_blank"><img src="graphics/twitter.png" alt="Follow us on Twitter" width="32" height="32" border="0"></a><img src="http://www.kgnu.org/dot.gif" alt="" width=4 height=1 border=0 align="none"><a href="http://www.facebook.com/kgnu.colorado" target="_blank"><img src="graphics/facebook.png" alt="Facebook" width="32" height="32" border=0></a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr> 
+							
+							<td height=25>
+							  <p><font face="Arial, sans-serif" size="-1" color="#993300"><br>
+					        Search KGNU.org:</font></p></td>
+					  </tr>
+						<tr> 
+							<td align="center">
+								<!-- // SiteSearch Google -->
+								<form method=GET action="http://www.google.com/search">
+									<!-- Note: in IE, the form adds extra space below its content -->
+									<input type=hidden name=ie value=UTF-8>
+									<input type=hidden name=oe value=UTF-8>
+									<input type=hidden name=domains value="kgnu.org">
+									<input type=hidden name=sitesearch value="kgnu.org">
+									<input type=text name=q size=15 maxlength=255 value="" alt="search string entry field"><br>
+									<img src="graphics/google.gif" alt="google" border=0 width=42 height=13>
+									<input type=submit name=btnG value="Find">
+								</form>
+							</td>
+						</tr>
+                        <tr> 
+							<td align="center"><a href="http://kgnu.org/cgi-bin/moreinfo.py?Notice=1254776487"><img src="http://www.kgnu.org/images/supporters/kgnu-visa-card.gif" border="0"></td>
+					  </tr>	
+						<tr> 
+							<td height=25><font face="Arial, sans-serif" size="-1" color="#993300"><br>
+							<br>
+						    <br>
+							Support From:</font></td>
+					  </tr>
+                        <tr> 
+							<td align="center"><a href="http://www.mountainsunpub.com/" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-mtnsun.gif" border="0"></td>
+					  </tr>	
+						<tr> 
+							<td align="center"><a href="http://www.solarips.com" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-IPS.gif" border="0"></a></td>
+						</tr>
+						<!-- <tr>
+                        	<td align="center">
+                            	<a href="http://www.ecometro.com/denver/default.aspx" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-ecometro.gif" border="0">
+                            </td>
+                        </tr>-->
+ 						<tr> 
+							<td align="center"><a href="http://www.gayandlesbianfund.org/" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-gaylesbianfund.gif" border="0"></a></td>
+						</tr>	
+                        <tr> 
+							<td align="center"><a href="http://www.eduproject.com/" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-ebook.gif" border="0"></a></td>
+					  </tr>	
+					  <tr>
+					    <td align="center"><a href="http://www.cshares.org" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-comm-shares.gif" width="120" height="74" border="0"></a></td>
+                      </tr>
+						<tr> 
+							<td align="center"><a href="http://www.bouldercountyarts.org" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-bocoarts.gif" border="0"></a></td>
+						</tr>	
+                   <!--  <tr> 
+							<td align="center"><a href="http://www.indianpeaksspringwater.com/" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-indianpeaks.gif" border="0"></td>
+					  </tr> -->
+							<tr> 
+										<td height=25><p>&nbsp;</p>
+										  <p>&nbsp;</p>
+										</td>
+							</tr>
+
+<!--							<td align="center">
+									<a href="http://coblues.com" target="_blank">
+										<img src="graphics/supporters/Colorado Blues Society coblues.com.gif" alt="Colorado Blues Society" title="Colorado Blues Society" border=0 width=120 vspace=3>
+										<font face="Arial, sans-serif" color="#009999" size="-1">
+											Colorado Blues Society
+										</font>
+									</a>
+							</td>
+						</tr>
+-->
+
+					</table>
+				</td>
+
+
+
+				<td valign="top" align="center" width="100%">
+				<!--// contents -->
+					
+					<a name="content"></a> <!-- accessibility -->
+					<table width="100%" border=0 cellspacing=9 cellpadding=0> <!-- // This sets the cellspacing around the 4 boxes -->
+
+
+<!-- // Tune In -->
+
+									<tr> 
+										<td>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#867564" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-left-brown-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#867564"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#867564" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-right-brown-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+
+												</tr>
+											</table>
+											<table width="100%" bgcolor="#867564" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td>
+														<table bgcolor="#867564" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td bgcolor="#867564"><font face="Arial, sans-serif" size="-1" color="#cdc6bb"><font color="4d3c22"><i>&nbsp;&nbsp;&nbsp;Tune In: </i></b><font color="#cdc6bb">88.5 FM & 1390 AM <i>(Denver / Boulder)</i> <font color="4d3c22">// <font color="#cdc6bb">93.7 FM <i>(Nederland)</i> <font color="4d3c22">// <a href="http://www.kgnu.org/ht/listencomp.html"><font color="#cdc6bb">Online Streams</a></font></center></td>
+																<td bgcolor="#867564"><img src="http://www.kgnu.org/dot.gif" alt="" width=10 height=1 border=0 align="none"></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#867564" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-left-brown-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#867564"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#867564" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-right-brown-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+												</tr>
+											</table>
+										</td>
+									</tr> 
+
+<!-- // End Tune In -->
+
+<!-- // End Quick Clicks Box -->																		
+
+									
+<!-- //  Volunteer Box -->
+
+									<!-- // <tr> 
+										<td>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#DFDCD7" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-left-sand-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#DFDCD7"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#DFDCD7" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-right-sand-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+
+												</tr>
+											</table>
+											<table width="100%" bgcolor="#DFDCD7" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td>
+														<table bgcolor="#DFDCD7" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td bgcolor="#DFDCD7"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+																<td width=29 bgcolor="#DFDCD7" ><img src="http://www.kgnu.org/music/newbanner/tan-vol-gradient-left.gif" alt="" height=60 border=0></td>
+
+																<td bgcolor="#DFDCD7"><img src="http://www.kgnu.org/images/banner/banner-D-tan.jpg" alt="" height=60 border=0></td>
+																<td bgcolor="#DFDCD7"><img src="http://www.kgnu.org/music/newbanner/tan-vol-gradient-right.gif" alt="" height=60 border=0></td>
+																<td bgcolor="#DFDCD7"><font face="Arial, sans-serif" size="-1" color="#867564"><i>This station runs on <a href="http://www.kgnu.org/ht/volunteer.html"><font color="e09e20">volunteer</font></a><font color="#867564"> power and participation from the community.</i></td>
+																<td bgcolor="#DFDCD7"><img src="http://www.kgnu.org/dot.gif" alt="" width=10 height=1 border=0 align="none"></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#DFDCD7" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-left-sand-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#DFDCD7"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#DFDCD7" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-right-sand-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>--> 
+
+<!-- // End Volunteer Box -->																		
+
+<!-- // Begin Membership Box -->
+																	
+									<tr> 
+										<td>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#b9dc60" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-left-green-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#b9dc60"><img src="dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#b9dc60" valign="top"><img src="http://www.kgnu.org/music/newbanner/top-right-green-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+
+												</tr>
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td>
+														<table bgcolor="#b9dc60" border=0 cellspacing=1 cellpadding=5>
+															<tr>
+																<td bgcolor="#b9dc60">&nbsp;</td>
+																<td width=29 bgcolor="#badc60" ><a href="https://kgnu.org/ht/quickjoin.html"><img src="http://www.kgnu.org/music/newbanner/green-donate-button.gif" alt="" width=60 height=60 border=0></a></td>
+
+															  <td bgcolor="#e3ec94">
+																<font face="Arial, sans-serif" size="+1" color="ce920d">
+															<center><b>Support Independent Community Radio<br></b></center></font>
+														
+														
+															<font face="Arial, sans-serif" size="-1" color="2f302f"><b>KGNU is independent, non-commercial, community radio for Boulder, Denver and beyond. We depend on listener donations to keep the radio station running. Please <a href="https://kgnu.org/ht/quickjoin.html"><font color="4a7e27">make a donation now</font></a>. Let us hear from you!</b></font><br>
+															<font face="Arial, sans-serif" size="-5" color="7dc0c1"><font face="Arial, sans-serif" size="-1" color="8cd9d8">&nbsp;</font></font>
+																</td>
+																<td bgcolor="#b9dc60"><img src="dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#b9dc60" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-left-green-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#b9dc60"><img src="dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#b9dc60" valign="top"><img src="http://www.kgnu.org/music/newbanner/btm-right-green-box.gif" alt="" width=29 height=6 border=0 align="none"></td>
+												</tr>
+											</table>
+										</td>
+									</tr> 
+									
+<!-- End Membership Box -->
+
+<!-- Alert Box Start -->
+<!--
+									<tr> 
+										<td>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#ee3024" valign="top"><img src="http://www.kgnu.org/graphics/redbox-topleft.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#ee3024"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#ee3024" valign="top"><img src="http://www.kgnu.org/graphics/redbox-topright.gif" alt="" width=29 height=6 border=0 align="none"></td>
+
+												</tr>
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td>
+														<table bgcolor="#ee3024" border=0 cellspacing=2 cellpadding=2>
+															<tr>
+																<td bgcolor="#ee3024"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+
+																<td bgcolor="#f58260">
+																<font face="Arial, sans-serif" size="+1" color="fcf9a4">
+															<center><b>FM Transmitter Upgrade & Stream Info:<br></b>
+														</font>
+														<font face="Arial, sans-serif" size="-1" color="470d09">
+															<b> We have completed the installation of <a href="http://www.kgnu.org/cgi-bin/moreinfo.py?Notice=1234818033"><font color="ecea1c">our new digital transmitter</font></a> and are once again broadcasting on 88.5 FM. However, we may need to take this signal offline for a bit for technical tweaking. We appreciate your patience.&nbsp;<br>Our upgrades have affected our <a href="http://www.kgnu.org/ht/listencomp.html"><font color="ecea1c">streaming quality</font></a> temporarily. You may experience diminished sound quality and buffering difficulties as we fine-tune the streams.</font><br><br><font face="Arial, sans-serif" size="-1" color="fab8a5">
+													</font>
+																</td>
+																<td width=29 bgcolor="#ee3024" ><a href="http://dnc.kgnu.org/"><img src="http://www.kgnu.org/images/alert-box-tower-2.gif" alt="" height=118 border=0></a></td>
+																<td bgcolor="#ee3024"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+
+											</table>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+												<tr>
+													<td width=29 bgcolor="#ee3024" valign="top"><img src="http://www.kgnu.org/graphics/redbox-btmleft.gif" alt="" width=29 height=6 border=0 align="none"></td>
+													<td colspan="2" bgcolor="#ee3024"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0 align="none"></td>
+													<td width=29 bgcolor="#ee3024" valign="top"><img src="http://www.kgnu.org/graphics/redbox-btmright.gif" alt="" width=29 height=6 border=0 align="none"></td>
+												</tr>
+											</table>
+										</td>
+
+									</tr> 
+-->
+<!-- // End Alert Box -->
+
+									
+									
+
+									<!-- // TOP ROW WITH 3 BOXES -->
+									<tr> 
+										<td>
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+
+												<tr><!-- // This sets the widths -->
+												
+													<!-- // center left box - Spotlight-->
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="66%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+
+													<!-- spacer between the boxes -->
+													<td width="2%"><img src="dot.gif" alt="" width=10 height=1 border=0></td> 
+
+													<!-- // right box - Upcoming -->
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="32%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													
+												</tr>
+
+
+
+												<tr> <!-- // Tabs and top line -->
+
+													<!-- // Tabs and top line for center left box -->
+													<td colspan=5>
+														<table border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td rowspan=3><img src="http://www.kgnu.org/music/newbanner/tab-off-left-sand.gif" alt="" width=12 height=24 border=0></td>
+																<td bgcolor="#AAAA77"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0></td>
+																<td width="100%" bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td bgcolor="#AAAA77"><img src="http://www.kgnu.org/dot.gif" alt="" width=1 height=1 border=0></td>
+																<td rowspan=3><img src="http://www.kgnu.org/music/newbanner/tab-off-right-sand.gif" alt="" width=12 height=24 border=0></td>
+															</tr>
+															<tr>
+																<td bgcolor="#DFDCD7"><a href="/rss/spotlight.xml"><img src="graphics/rss.gif" hspace=5 title="Subscribe to a feed of kgnu gnus and events" alt="Subscribe to a feed of kgnu gnus and events" width=16 height=16 border=0></a></td>
+																<!-- a nowrap or a &nbsp; in the What's gnu in the next line breaks this box in IE... why?-->
+																<td align="center" bgcolor="#DFDCD7"><font color="#867564" face="Arial, sans-serif" size="-1"><b>Spotlight:</b> <font color="#9c8c7d" face="Arial, sans-serif" size="-1">The Latest Updates from KGNU</font></td>
+															  <td bgcolor="#DFDCD7"><a href="/cgi-bin/spotlightprint.py"><img src="graphics/print_tan.gif" hspace=5 title="Print this list" alt="Print this list" width=16 height=16 border=0></a></td>
+															</tr>
+															<tr>
+																<td bgcolor="#AAAA77" colspan=3 height=1><img src="dot.gif" alt="" height=1 border=0></td>
+															</tr>
+														</table>
+													</td>
+													
+
+													<!-- spacer between the boxes -->
+													<td rowspan=3><img src="dot.gif" alt="" width=10 height=1 border=0></td> 
+
+													
+													<!-- // Tabs and top line for right box -->
+													<td colspan=5>
+														<table border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td rowspan=3><img src="http://www.kgnu.org/music/newbanner/tab-off-left-sand.gif" alt="" width=12 height=24 border=0></td>
+																<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td width="100%" bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td rowspan=3><img src="http://www.kgnu.org/music/newbanner/tab-off-right-sand.gif" alt="" width=12 height=24 border=0></td>
+															</tr>
+															<tr>
+																<td bgcolor="#DFDCD7"><a href="/rss/programs.xml"><img src="graphics/rss.gif" hspace=5 title="Subscribe to a feed of upcoming program specials" alt="Subscribe to a feed of upcoming program specials" width=16 height=16 border=0></a></td>
+																<td align="center" bgcolor="#DFDCD7"><font color="#867564" face="Arial, sans-serif" size="-1"><b>On Air:</b> <font color="#9c8c7d" face="Arial, sans-serif" size="-1">Programming Notes</font></td>
+															  <td bgcolor="#DFDCD7"><a href="/cgi-bin/upcomingprint.py"><img src="graphics/print_tan.gif" hspace=5 title="Print this list" alt="Print this list" width=16 height=16 border=0></a></td>
+															</tr>
+															<tr>
+																<td bgcolor="#AAAA77" colspan=3 height=1><img src="dot.gif" alt="" height=1 border=0></td>
+															</tr>
+														</table>
+													</td>
+												</tr>
+												
+												
+												<tr> <!-- // Box sides and content -->
+
+													<!-- // Box sides and content for center-left box -->
+													<!-- right edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<!-- contents -->
+													<td valign="top" bgcolor="white">
+														<table width="100%" border=0 cellspacing=30 cellpadding=0> <!-- // this cellspacing sets the indent between the card edges and its content -->
+															<tr>
+																<td>
+																	<!-- // CENTER-LEFT BOX INNER CONTENT -->
+																	<table width="100%" border=0 cellspacing=0 cellpadding=0>
+
+<!-- // Embed Spotlight Ahead of Program notice -->
+
+<!--// End Embed -->
+
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1276094427"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																				
+																					<b>23rd Annual Charles Sawtelle Mountain Jam</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1276094427"><img src="../images/spotlight/MountainJam.jpg" alt="23rd Annual Charles Sawtelle Mountain Jam" title="23rd Annual Charles Sawtelle Mountain Jam" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>Please join us for another fantastic day in the mountains with great food, friends and music. Slow-cooked, Texas-style barbecue, salads, homemade desserts and micro-brew beers accompany amazing music at the Gold Hill Inn. Our lineup this year includes Tim O'Brien, Open Road and Romano Paoletti. Look for ticket information late May! 
+
+<br>&nbsp;<br><a href="http://www.goldhillinn.com/welcome.html" >Gold Hill Inn</a>, Jul 24, starting at 11:30 AM
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305841484"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>Schedule Changes</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305841484"><img src="../images/spotlight/schedule-changes-new.jpg" alt="Schedule Changes" title="Schedule Changes" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>KGNU has made some changes to our schedule. We have added <b>Al Jazeera Radio</b> weekdays 5:30-6:00am. <b>Smash It Back!</b> brings a special mix of "Classic Punk & Other Junk" to the airwaves on Friday evenings from 11:00pm-Midnight starting June 3rd.
+
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305839740"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>East Colfax Scratch Academy</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305839740"><img src="../images/spotlight/East-Colfax-Scratch-Academy.jpg" alt="East Colfax Scratch Academy" title="East Colfax Scratch Academy" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>The <a href="http://www.kgnu.org/cgi-bin/moreinfo.py?Notice=1305839740">East Colfax Scratch Academy</a> is a music education project of KGNU. We've been teaching the art of turntablism to students from East High School. The latest graduation performance at Twist & Shout for Spring students was featured on 9 News. More <a href="http://www.kgnu.org/cgi-bin/moreinfo.py?Notice=1305839740">info and video</a>.
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1229462542"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>KGNU Live on your iPhone or iPod Touch</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1229462542"><img src="../images/spotlight/pub-radio-player_70_plus.jpg" alt="KGNU Live on your iPhone or iPod Touch" title="KGNU Live on your iPhone or iPod Touch" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>You can now listen to KGNU live on your iPhone and iPod Touch with the Public Radio Player iPhone application. Get the app through the <a href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=312880531&mt=8">iTunes App Store</a> or in the App Store on your iPhone. <a href="http://kgnu.org/cgi-bin/moreinfo.py?Notice=1229462542">More info</a>.
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305753657"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>Federal Funding of Community Radio</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1305753657"><img src="../images/spotlight/saveyourstation.jpg" alt="Federal Funding of Community Radio" title="Federal Funding of Community Radio" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>Congress begins debating the 2012 federal budget this summer and some lawmakers are expected to again propose elimination of funding for public broadcasting.
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1225997220"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>Donate Your Old Car to Support KGNU</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1225997220"><img src="../images/spotlight/charles-sawtelle.jpg" alt="Donate Your Old Car to Support KGNU" title="Donate Your Old Car to Support KGNU" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>Donating your old vehicle is an easy way to support community radio.  Avoid the hassle of selling it yourself, get a tax deduction and help KGNU!
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr> <!--//<{Start}>|Spotlight|-->
+																			<td><img src="dot.gif" alt="" width=1 height=5 border=0></td>
+																		</tr>
+
+
+																		<tr>
+																			<td>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1254776487"><img src="graphics/moreinfo.gif" align="right" title="Click for more info" alt="more info" width=24 height=24 border=0 vspace=4  hspace=2></a> 
+																				<font size="-1" face="Arial, sans-serif" color="#009999">
+																					<b>Credit Union Membership and KGNU Visa® Platinum Credit Cards</b>
+																				</font>
+																				<br>
+																				<a href="/cgi-bin/moreinfo.py?Notice=1254776487"><img src="../images/spotlight/BME.jpg" alt="Credit Union Membership and KGNU Visa® Platinum Credit Cards" title="Credit Union Membership and KGNU Visa® Platinum Credit Cards" width=100 height=72 border=1 hspace=4 vspace=2 align="left"></a>
+																				<font size="-1" face="Arial, sans-serif">
+																					&nbsp;<br>You can support KGNU every time you use your Visa Platinum Credit Card. For a limited time only, a 4.9 % rate is available on balance transfers. Sign up for the new card through our longtime partner, the BME Federal Credit Union. All KGNU members are eligible to join this not-for-profit financial institution.
+																					<br>&nbsp;
+																				</font>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																		</tr> <!--//<{End}>-->
+																		<tr>
+																			<td align="center">
+																				<font face="Arial, sans-serif" size="-1"><br><a href="ht/oldspotlight.html">All Spotlight items</a></font>
+																				&nbsp;
+																				<a href="/cgi-bin/spotlightedit.py"><img src="graphics/add_tan.gif" title="KGNU only: add a KGNU notice" alt="KGNU only: add a KGNU notice" width=16 height=16 border=0></a>
+																			</td>
+																		</tr>
+
+
+																	</table>
+																	<!-- // END OF CENTER-LEFT BOX INNER CONTENT -->
+																</td>
+															</tr>
+														</table> 
+													</td>
+													<!-- left edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<!-- // End of left box -->
+
+
+													<!-- // Box sides and content for right box -->
+													<!-- right edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<!-- contents -->
+													<td valign="top" bgcolor="white">
+														<table width="100%" border=0 cellspacing=0 cellpadding=0> 
+															<tr>
+																<td>
+																	<!-- // RIGHT BOX INNER CONTENT -->
+																	<table width="100%" border=0 cellspacing=0 cellpadding=0>
+																		<tr>
+																			<td valign="top" bgcolor="white"> 
+														<!-- // Links: listen, Playlist, Schedule -->
+														<div id="on_now_content"></div>
+														<div id="coming_up_content"></div>
+</td>
+																		</tr>
+																	</table>
+																	<!-- // END OF RIGHT BOX INNER CONTENT -->
+																	
+																</td>
+															</tr>
+														</table>
+													</td>
+													<!-- left edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<!-- // End of right box -->
+
+												</tr>
+
+
+												<tr> <!-- // Box bottoms -->
+
+													<!-- // Box bottom for center-left box -->
+													<td colspan=5 bgcolor="white">
+														<table width="100%" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td width=12 rowspan=4><img src="graphics/boxcorner_bl_clr.gif" alt="" width=12 height=14 border=0></td>
+																<td width=1 height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width="100%" height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width=14 rowspan=4><img src="graphics/boxcorner_br_clr.gif" alt="" width=14 height=14 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+														</table>
+													</td>
+
+													<!-- // Box bottom for right box -->
+													<td colspan=5 bgcolor="white">
+														<table width="100%" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td width=12 rowspan=4><img src="graphics/boxcorner_bl_clr.gif" alt="" width=12 height=14 border=0></td>
+																<td width=1 height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width="100%" height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width=14 rowspan=4><img src="graphics/boxcorner_br_clr.gif" alt="" width=14 height=14 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+														</table>
+													</td>
+
+												</tr>
+											</table>
+										</td>
+									</tr> 
+									<!-- // END OF TOP ROW WITH 3 BOXES -->
+
+									<!-- // BOTTOM ROW WITH ABOUT BOX -->
+									<tr> 
+										<td bgcolor="white">
+											<table width="100%" border=0 cellspacing=0 cellpadding=0>
+
+												<!-- // Box top -->
+												<tr> 
+													<td colspan=5 >
+														<table width="100%" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td width=12 rowspan=2><img src="graphics/boxcorner_tl_clr.gif" alt="" width=12 height=12 border=0></td>
+																<td width=1 height=1><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td width="100%" height=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td width=14 rowspan=2><img src="graphics/boxcorner_tr_clr.gif" alt="" width=14 height=12 border=0></td>
+															</tr>
+															<tr>
+																<td height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+															</tr>
+														</table>
+													</td>
+												</tr> 
+												
+												
+												
+												<!-- // Box sides and content -->
+												<tr> 
+													<!-- right edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<!-- contents -->
+													<td width="100%" valign="top">
+														<table width="100%" border=0 cellspacing=10 cellpadding=0> <!-- // this cellspacing sets the indent between the card edges and its content -->
+															<tr>
+																<td>
+																	<!-- // BOX INNER CONTENT -->
+																	<table width="100%" border=0 cellspacing=0 cellpadding=0>
+																		<tr>
+																			<td>
+																				<table width="100%" border=0 cellspacing=2 cellpadding=0>
+																					<tr>
+																						<td width="33%" align="center">
+																							<table border=0 cellspacing=2 cellpadding=0>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Boulder</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999"><b>88.5 FM</b></font></td>
+																								</tr>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Denver</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999"><b>88.5 FM & 1390 AM</b></font></td>
+																								</tr>
+																								<tr>
+																									<td nowrap align="right"><font face="Arial, sans-serif" size="-1">Nederland</font></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">93.7 FM</font></td>
+																								</tr>
+																							</table>
+																						</td>
+																						<td width="33%" align="center">
+																							<table border=0 cellspacing=2 cellpadding=0>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Offices</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">303 449-4885</font></td>
+																							  </tr>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Boulder Studio</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">303 442-4242</font></td>
+																							  </tr>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Denver Studio</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">303 825-0619</font></td>
+																							  </tr>
+																							</table>
+																					  </td>
+																						<td width="33%" align="center">
+																							<table border=0 cellspacing=2 cellpadding=0>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">Address</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">4700 Walnut St.</font></td>
+																								</tr>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1"></font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999">Boulder CO, 80301</font></td>
+																								</tr>
+																								<tr>
+																									<td nowrap align="right"><div align="left"><font face="Arial, sans-serif" size="-1">More</font></div></td>
+																									<td nowrap><font face="Arial, sans-serif" size="-1" color="#009999"><a href="/ht/contact.html">Contact Us</a></font></td>
+																							  </tr>
+																							</table>
+																					  </td>
+																					</tr>
+																				</table>
+
+																			</td>
+																		</tr>
+																	</table> 
+																	<!-- // END OF BOX INNER CONTENT -->
+																</td>
+															</tr>
+														</table> 
+													</td>
+													<!-- left edge of box -->
+													<td width=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+													<td width=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+
+												</tr>
+												
+												<!-- // Box bottom -->
+												<tr> 
+													<td colspan=5>
+														<table width="100%" border=0 cellspacing=0 cellpadding=0>
+															<tr>
+																<td width=12 rowspan=4><img src="graphics/boxcorner_bl_clr.gif" alt="" width=12 height=14 border=0></td>
+																<td width=1 height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width="100%" height=11><img src="dot.gif" alt="" width=1 height=11 border=0></td>
+																<td width=14 rowspan=4><img src="graphics/boxcorner_br_clr.gif" alt="" width=14 height=14 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#cccc99"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#808080"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+															<tr>
+																<td height=1><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+																<td height=1 bgcolor="#C0C0C0"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+															</tr>
+														</table>
+													</td>
+
+												</tr>
+											</table>
+										</td>
+									</tr> 
+									<!-- // END OF BOTTOM ROW WITH ABOUT BOX -->
+
+								</table>
+							</td>
+
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		
+        
+		<!-- // bottom notices -->
+		&nbsp;<br>
+		<center>
+			<font face="Arial, sans-serif" color="#009999" size="-2">Entire site &copy; 2010 KGNU.<a href="http://mercury.kgnu.net/w/FrontPage"> Wiki</a></font>
+			<a href="/cgi-bin/index.py?showpage=yes"><img src="graphics/refresh.gif" title="Rebuild this page" alt="Rebuild this page" width=16 height=16 border=0></a>
+	    <br>
+			<font face="Arial, sans-serif" size=-2>
+				Page generated automatically on Thu, 02 Jun 2011 at 17:00:02.</font>
+		</center>
+		
+		<script src="js/menudata.js" language="javascript" type="text/javascript"></script>
+		<script src="js/menuscript.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript" src="http://cetrk.com/pages/scripts/0009/4367.js"> </script>
+	</body>
+</html>
