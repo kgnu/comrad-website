@@ -65,7 +65,7 @@
 		//file already exists - the script is already running
 		//TODO: we should check to see if the file is locked, and restart recording if it's not. if the file is not locked, we could assume that streamripper
 		//has stopped for some reason
-		logText('stream is already being recorded at '.$destination.$folder.'/stream.mp3...exiting script.');
+		logText('stream is already being recorded at '.$temporaryDestination.$folder.'/stream.mp3...exiting script.');
 		exit();
 	}
 	$command = "streamripper ".$stream; //setup the terminal command
@@ -87,10 +87,12 @@
 		//successful execution
 		//move the file to its permanent location
 		//create any folders that are not created yet
-		if (file_exists($destination.$event["title"])) {
+		if (!file_exists($destination.$event["title"])) {
+			logText('trying to create directory at '.$destination.$event["title"]);
 			mkdir($destination.$event["title"]);
 		}
-		if (file_exists($destination.$event["title"]."/".date("Y", $event["recordingStartTime"]))) {
+		if (!file_exists($destination.$event["title"]."/".date("Y", $event["recordingStartTime"]))) {
+			logText('trying to create directory at '.$destination.$event["title"]."/".date("Y", $event["recordingStartTime"]));
 			mkdir($destination.$event["title"]."/".date("Y", $event["recordingStartTime"]));
 		}
 		//move the file to its permanent location
@@ -117,9 +119,32 @@
 		$eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"]);
 		
 		foreach ($eventInstance as $ei) {
-			$ei->RecordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
-		}
-		
+			// Whatever the file name is
+			$recordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
+			logText('updating database with file path: checking instance');
+			// Create a new ScheduledShowInstance if $ei is a ScheduledEventInstance
+			if ($ei instanceof ScheduledEventInstance) {
+				$ei = new ScheduledShowInstance(array(
+					'ScheduledEventId' => $ei->ScheduledEventId,
+					'StartDateTime' => $ei->StartDateTime,
+					'Duration' => $ei->Duration
+				));
+			}
+
+			// $ei now points to a ScheduledShowInstance
+			logText('updating database with file path: $ei now points to a ScheduledShowInstance');
+
+			// Save it to the database.  This will insert if it's new, save if it already exists
+			if ($ei->hasColumn('RecordedFileName')) {
+				logText('updating database with file path: the instance has the RecordedFileName column');
+				$ei->RecordedFileName = $recordedFileName;
+				logText('updating database with file path: file path has been set');
+				DB::getInstance('MySql')->save($ei);
+				logText('updating database with file path: everything looks good');
+			} else {
+				logText("Error: The event instance did not have the RecordedFileName column");
+			}
+		}		
 		
 		//write ID3 tags using EYED3
 		//http://eyed3.nicfit.net/
@@ -129,7 +154,7 @@
 		$command .= ' -t "'.$event["titleWithSpaces"].'"'; //title - we'll use the show title
 		$command .= ' -Y '.date("Y", $event["recordingStartTime"]); //year
 		$command .= ' -p KGNU'; //publisher
-		$command .= ' file '.$recordedFileName;
+		$command .= ' '.$recordedFileName;
 		logText('writing ID3 tags with commad: '.$command);
 		exec($command, $output, $returnStatus);
 		if ($returnStatus == "0") {
@@ -145,6 +170,10 @@
 		
 	} else {
 		//unsuccessful execution
+		//$streamRipperOutput = '';
+		//foreach ($output as $o) {
+		//	$streamRipperOutput .= "\n".$o;
+		//}
 		logText("streamripper returned an unsuccessful status code");
 	}
 	
@@ -161,30 +190,25 @@
 	 * @param string $dir Directory name
 	 * @param boolean $deleteRootToo Delete specified top-level directory as well
 	 */
-	function unlinkRecursive($dir, $deleteRootToo)
-	{
-	    if(!$dh = @opendir($dir))
-	    {
-		return;
+	function unlinkRecursive($dir, $deleteRootToo) {
+	    if(!$dh = @opendir($dir)) {
+			return;
 	    }
-	    while (false !== ($obj = readdir($dh)))
-	    {
-		if($obj == '.' || $obj == '..')
-		{
-		    continue;
-		}
-
-		if (!@unlink($dir . '/' . $obj))
-		{
-		    unlinkRecursive($dir.'/'.$obj, true);
-		}
+	    while (false !== ($obj = readdir($dh))) {
+			if($obj == '.' || $obj == '..') {
+				continue;
+			}
+			if (is_dir($dir . '/' . $obj)) {
+				unlinkRecursive($dir.'/'.$obj, true);
+			} else {
+				unlink($dir . '/' . $obj);
+			}
 	    }
 
 	    closedir($dh);
 	   
-	    if ($deleteRootToo)
-	    {
-		@rmdir($dir);
+	    if ($deleteRootToo) {
+			@rmdir($dir);
 	    }
 	   
 	    return;
