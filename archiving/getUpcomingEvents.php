@@ -35,7 +35,6 @@
 	
 	//loop through the next day's events, and prepare a string to store in a text file
 	$upcomingEvents = "";
-	//TODO: Add an offset
 	foreach ($events as $scheduledEventInstance) {
 		$scheduledEvent = $scheduledEventInstance->ScheduledEvent;
 		$event = $scheduledEvent->Event;

@@ -70,8 +70,8 @@ echo '<'.'?';?>xml version="1.0"<?php echo '?'.'>'; ?>
 		<lastBuildDate><?php echo gmdate('D, d M Y G:i:s',time()).' GMT'; ?></lastBuildDate>
 		<?php
 			foreach ($shows as $show) {
-				$url = ''; //TODO: set this variable
-				if (!empty($show->RecordedFileName)) {
+				$url = $show->ScheduledShowInstance->RecordedFileName; //TODO: set this variable
+				if (!empty($url)) {
 					$numberOfItems++;
 				?>
 					<item>
