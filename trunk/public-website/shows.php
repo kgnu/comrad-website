@@ -218,12 +218,9 @@
         if (value.Attributes.ShortDescription) {
           shortDescription = value.Attributes.ShortDescription;
         }
-        // if (!shortDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) {
-        //   shortDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription;
-        // }
-        if (!shortDescription) {
-          shortDescription = "";
-        }
+        //if (!shortDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) {
+		//	shortDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription;
+        //}
 
         /**
          * Get the Show Long Description
@@ -232,12 +229,9 @@
         if (value.Attributes.LongDescription) {
           longDescription = value.Attributes.LongDescription;
         }
-        // if (!longDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) {
+        //if (!longDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) {
         //   longDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription;
-        // }
-        if (!longDescription) {
-          longDescription = "";
-        }
+        //}
 
         /**
          * Get the Show ID
@@ -325,14 +319,17 @@
                 
         list.append(
 			'<li class="showInstance">' +
-				(!title || getUrlParameter("name") || getUrlParameter("id") ?"":'<div style="padding:5px">' + title + "</div>") +
-				'<div style="padding: 5px;">' + d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear  + '</div>' +
-				'<div style="padding: 5px;">' + (!hostName?"": "Host: " + hostName) + '</div>' +
-				'<div style="padding: 5px;">' + shortDescription + '</div>' +
-				'<div style="padding: 5px;">' + longDescription + '</div>' +
-				'<div style="padding: 5px;">' + playlist + '</div>' +
-				'<div style="padding: 5px;">' + player + '</div>' +
-				'<div id="' + playlistDivId + '" style="padding: 5px;">' + '</div>' +
+				'<div class="showTitleContainer"><div class="showTitle">' + 
+					(!title || getUrlParameter("name") || getUrlParameter("id") ?"": title + ", " ) +
+					d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
+				'</div><div class="clear">.</div></div>' +
+				'<div class="spacer">&nbsp;</div>' +
+				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
+				(!shortDescription ? '' : '<div class="showDetail">' + shortDescription + '</div>') +
+				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>') +
+				'<div class="showDetail playlistContainer">' + playlist + '</div>' +
+				'<div class="showDetail">' + player + '</div>' +
+				'<div id="' + playlistDivId + '" class="showDetail">' + '</div>' +
 			 '</li>'); //sw 6/5/11 changed
 
 		// Add a click handler to the anchor tag inside of the content div
@@ -342,7 +339,7 @@
 				
 				//if the playlist has not been populated yet, do so
 				if (!$(this).is("[playlistPopulated]")) {
-					//add a loading image
+					//add a loading notification
 					$("#" + $(this).attr("playListDivId")).append('<div class="loading">Loading Playlist...</div>');
 					populatePlaylist($(this).attr("showId"), $(this).attr("playListDivId"), $(this).attr("playlistAId"));
 					$(this).attr("playlistPopulated","1");
@@ -351,6 +348,7 @@
 					//show/hide the div
 					$("#" + $(this).attr("playListDivId")).toggle();
 					
+					// sw 6/2/11 - removed this code
 					/*
 					// Inside of the click handler, 'this' references the clicked element (anchor tag)
 					// Save a reference to it so we can access it in the AJAX success callback.
@@ -407,13 +405,15 @@
 				}
 				
 				//change the image from "show" to "hide"
-				if ($(this).find("img").attr("src") == "btns/2/ShowPlaylist.gif") {
+				//sw 6/5/11 - changed these from using "==" to find the image name to using indexOf, since
+				//IE sets the SRC property to a full URL
+				if ($(this).find("img").attr("src").indexOf("btns/2/ShowPlaylist.gif") != -1) {
 					$(this).find("img").attr("src","btns/2/HidePlaylist.gif");
-				} else if ($(this).find("img").attr("src") == "btns/2/HidePlaylist.gif") {
+				} else if ($(this).find("img").attr("src").indexOf("btns/2/HidePlaylist.gif") != -1) {
 					$(this).find("img").attr("src","btns/2/ShowPlaylist.gif");
-				} else if ($(this).find("img").attr("src") == "btns/2/ShowDetail.gif") {
+				} else if ($(this).find("img").attr("src").indexOf("btns/2/ShowDetail.gif") != -1) {
 					$(this).find("img").attr("src","btns/2/HideDetail.gif");
-				} else if ($(this).find("img").attr("src") == "btns/2/HideDetail.gif") {
+				} else if ($(this).find("img").attr("src").indexOf("btns/2/HideDetail.gif") != -1) {
 					$(this).find("img").attr("src","btns/2/ShowDetail.gif");
 				}
 			}); 
