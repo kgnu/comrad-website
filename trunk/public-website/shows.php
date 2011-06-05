@@ -182,7 +182,6 @@
         return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
       });
 
-      $('#shows').empty();
       var lastDate;
       var dateContainer;
       var list;
@@ -210,11 +209,6 @@
 		  }
         }
         
-	    title = "<ul class=\"showInstanceList\">" + //sw 5/30/11 changed
-			    //"<div style=\"font-size: 32px; font-weight:bold; text-align: center; background-color: #FFFFFF; color: #000000; border-bottom:thin dotted #555555; padding: 10px;\">" +  //sw 5/30/11 removed
-			    (!title || getUrlParameter("name") || getUrlParameter("id") ?"":"<div>" + title + "</div>") + 
-				"</ul>"; //sw 5/30/11 - only write out the show name if we haven't given this page a specific show
-	    $('#shows').append(title);
 	    list = $("#shows .showInstanceList");
 
         /**
@@ -331,15 +325,14 @@
                 
         list.append(
 			'<li class="showInstance">' +
-				'<div style="padding: 5px;">' + //sw 5/30/11 changed
-                     d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear  + 
-                     '</div><div style="padding: 5px;">' + (!hostName?"": "Host: " + hostName) +
-                     '</div><div style="padding: 5px;">' + shortDescription + 
-                     '</div><div style="padding: 5px;">' + longDescription + 
-                     '</div><div style="padding: 5px;">' + playlist + 
-                     '</div><div style="padding: 5px;">' + player + 
-                     '</div><div id="' + playlistDivId + '" style="padding: 5px;">' +
-				 '</div>' +
+				(!title || getUrlParameter("name") || getUrlParameter("id") ?"":'<div style="padding:5px">' + title + "</div>") +
+				'<div style="padding: 5px;">' + d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear  + '</div>' +
+				'<div style="padding: 5px;">' + (!hostName?"": "Host: " + hostName) + '</div>' +
+				'<div style="padding: 5px;">' + shortDescription + '</div>' +
+				'<div style="padding: 5px;">' + longDescription + '</div>' +
+				'<div style="padding: 5px;">' + playlist + '</div>' +
+				'<div style="padding: 5px;">' + player + '</div>' +
+				'<div id="' + playlistDivId + '" style="padding: 5px;">' + '</div>' +
 			 '</li>'); //sw 6/5/11 changed
 
 		// Add a click handler to the anchor tag inside of the content div
@@ -460,7 +453,7 @@
   /* ]]> */
   </script>
 
-<div id="shows"></div>
+<div id="shows"><ul class="showInstanceList"></ul></div>
 
 <?php include("footer.php"); ?>
 
