@@ -139,7 +139,11 @@
 				logText('updating database with file path: the instance has the RecordedFileName column');
 				$ei->RecordedFileName = $recordedFileName;
 				logText('updating database with file path: file path has been set');
-				DB::getInstance('MySql')->save($ei);
+				if ($ei->isNew()) {
+					DB::getInstance('MySql')->insert($ei);
+				} else {
+					DB::getInstance('MySql')->update($ei);
+				}
 				logText('updating database with file path: everything looks good');
 			} else {
 				logText("Error: The event instance did not have the RecordedFileName column");
