@@ -166,19 +166,19 @@
 
   function populateShows(start, end)
   {
-
-    $.get('http://kgnu.net/playlist/ajax/geteventsbetween.php', {
+  
+	$.get('http://kgnu.net/playlist/ajax/geteventsbetween.php', {
       start: start,
       end: end,
-      types: $.toJSON([ '<?php echo $event_type; ?>' ])
+      types: $.toJSON([ 'Show' ])
 	  <?php if (isset($event_id)) { ?>,eventparameters: $.toJSON({  'Id': <?php echo $event_id; ?>  }) <?php } ?>
     }, function(results) {
-
+		
       if (!results) {
         return;
       }
-
-      results.sort(function(a, b) {
+	  
+	  results.sort(function(a, b) {
         return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
       });
 
@@ -186,9 +186,9 @@
       var lastDate;
       var dateContainer;
       var list;
+	  
       $.each(results, function(index, value) {
-
-        var longTime = value.Attributes.StartDateTime;
+		var longTime = value.Attributes.StartDateTime;
         var startTime = new Date(value.Attributes.StartDateTime * 1000);
         var duration = value.Attributes.Duration;
         var endTime = new Date(startTime.getTime() + duration * 60 * 1000);
@@ -209,12 +209,13 @@
 			$("#pageTitle").html(title);
 		  }
         }
-        if (!list) { 
-          title = "<ul class=\"showInstanceList\">" + //sw 5/30/11 changed
-                  //"<div style=\"font-size: 32px; font-weight:bold; text-align: center; background-color: #FFFFFF; color: #000000; border-bottom:thin dotted #555555; padding: 10px;\">" +  //sw 5/30/11 removed
-                  (!title || getUrlParameter("name") || getUrlParameter("id") ?"":title) + "</div></ul>"; //sw 5/30/11 - only write out the show name if we haven't given this page a specific show
-          $('#shows').append(list = $(title));
-        }
+        
+	    title = "<ul class=\"showInstanceList\">" + //sw 5/30/11 changed
+			    //"<div style=\"font-size: 32px; font-weight:bold; text-align: center; background-color: #FFFFFF; color: #000000; border-bottom:thin dotted #555555; padding: 10px;\">" +  //sw 5/30/11 removed
+			    (!title || getUrlParameter("name") || getUrlParameter("id") ?"":"<div>" + title + "</div>") + 
+				"</ul>"; //sw 5/30/11 - only write out the show name if we haven't given this page a specific show
+	    $('#shows').append(title);
+	    list = $("#shows .showInstanceList");
 
         /**
          * Get the Show Short Description
@@ -329,15 +330,17 @@
         }
                 
         list.append(
-          $('<li></li>').addClass("showInstance").append('<div style="padding: 5px;">' + //sw 5/30/11 changed
+			'<li class="showInstance">' +
+				'<div style="padding: 5px;">' + //sw 5/30/11 changed
                      d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear  + 
                      '</div><div style="padding: 5px;">' + (!hostName?"": "Host: " + hostName) +
                      '</div><div style="padding: 5px;">' + shortDescription + 
                      '</div><div style="padding: 5px;">' + longDescription + 
                      '</div><div style="padding: 5px;">' + playlist + 
                      '</div><div style="padding: 5px;">' + player + 
-                     '</div><div id="' + playlistDivId + '" style="padding: 5px;"></div>') //sw 5/30/11 changed
-          );
+                     '</div><div id="' + playlistDivId + '" style="padding: 5px;">' +
+				 '</div>' +
+			 '</li>'); //sw 6/5/11 changed
 
 		// Add a click handler to the anchor tag inside of the content div
 		if (playlistAId) {
@@ -422,7 +425,7 @@
 				}
 			}); 
 		}
-	  });
+      });
     }, 'jsonp');
   }
 
@@ -432,7 +435,14 @@
 		$("#pageTitle").html("Recent Shows");
     }
     // Populate the default date range...
-    populateShows('<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>', '<?php echo date('Y-m-d H:i:s'); ?>');
+    //populateShows('<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>', '<?php echo date('Y-m-d H:i:s'); ?>');
+	//var now = new Date();
+	//var nowStr = now.format("yyyy-mm-dd HH:MM:ss");
+	//get all events in the next day
+	var nowStr = "<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>";
+	var then = new Date();
+	var thenStr = then.format("yyyy-mm-dd HH:MM:ss");
+	populateShows(nowStr, thenStr);
   });
   
   //sw 5/30/11 - url parameters function from http://www.netlobo.com/url_query_string_javascript.html
