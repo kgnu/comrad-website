@@ -25,11 +25,49 @@
 			list-style-type:none;
 		}
 		.showInstance {
-			border:1px solid #777777;
+			border:1px solid #AAAAAA;
+			padding:5px;
+			margin-bottom:30px;
 		}
 		a img {
 			outline:none;
 			border:none;
+		}
+		.showTitleContainer {
+			height:1px;
+			position:absolute;
+		}
+		.showTitle {
+			padding:2px 4px;
+			float:left;
+			background:#fff;
+			position:relative;
+			top:-21px;
+			border:1px solid #AAAAAA;
+		}
+		div.clear {
+			clear:both;
+			display:block;
+			height:0;
+			line-height:0; /* enforce height:0 in ie6 */
+			visibility:hidden;
+		}
+		.spacer {
+			line-height:8px;
+			height:8px;
+		}
+		.showInstance .showDetail {
+			padding-bottom:5px;
+			padding-left:4px;
+		}
+		.showDate {
+			font-style:italic;
+		}
+		.longDescription p {
+			margin:0;
+		}
+		.showInstance .playlistContainer {
+			margin-top:10px;
 		}
 		.playlist {
 			border:1px solid #444;
