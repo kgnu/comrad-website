@@ -453,7 +453,12 @@
   /* ]]> */
   </script>
 
-<div id="shows"><ul class="showInstanceList"></ul></div>
+<div id="shows">
+	<ul class="showInstanceList"></ul>
+	<div class="priorShows">
+		Looking for shows prior to June 1st, 2011? <a href="http://kgnu.org/ht/listings.html?date=2011-05-31&show=All&host=All&display=list">Go here</a>.
+	</div>
+</div>
 
 <?php include("footer.php"); ?>
 

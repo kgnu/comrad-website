@@ -84,6 +84,11 @@
 		.loading {
 			color:#999;
 		}
+		.priorShows {
+			margin-top:1em;
+			font-size:14pt;
+			margin-left:14px;
+		}
       </style>
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/jquery/ui/jquery-ui.js"></script>
