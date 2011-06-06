@@ -42,8 +42,9 @@
 			float:left;
 			background:#fff;
 			position:relative;
-			top:-21px;
-			border:1px solid #AAAAAA;
+			top:-19px;
+			/*border:1px solid #AAAAAA;*/
+			color:#009999;
 		}
 		div.clear {
 			clear:both;
