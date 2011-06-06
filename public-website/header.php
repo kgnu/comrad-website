@@ -87,7 +87,7 @@
 		.priorShows {
 			margin-top:1em;
 			font-size:14pt;
-			margin-left:14px;
+			margin-left:16px;
 		}
       </style>
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
