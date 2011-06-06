@@ -73,6 +73,18 @@
   <script type="text/javascript">
   /* <![CDATA[ */
   
+  <?php
+	//sw 6/6/11 - if the "name" or "id" GET parameters are set, 
+	//we'll show the name of the show
+	//otherwise, we'll show "Recent Shows" as the title
+	//the JavaScript variable isSpecificShow will be used to keep track of this
+	if (isset($_GET["name"]) || isset($_GET["id"])) {
+		echo 'var isSpecificShow = true;';
+	} else {
+		echo 'var isSpecificShow = false;';
+	}
+  ?>
+  
   //preload the "Hide" images so that they can display immediately when JavaScript switches
   //the images to display them
   var img1 = new Image();
@@ -80,21 +92,9 @@
   var img2 = new Image();
   img2.src = "btns/2/HideDetail.gif";
 
-  var d_names = new Array("Sunday", "Monday", "Tuesday",
+  var dayNames = new Array("Sunday", "Monday", "Tuesday",
         "Wednesday", "Thursday", "Friday", "Saturday");
 
-
-  function myToggle(divId) {
-    $('#'+ divId).toggle();
-  }
-
-  /*function setNewClickAction(divId, aId) {
-    
-    //$('#'+ divId).unbind('click').click(myToggle(divId));
-    // $('#'+ aId).removeAttr('onclick').click(myToggle(divId));
-    $('#'+ aId).unbind('click').click(function() { $('#'+ divId).toggle(); } ); 
-
-  }*/
 
 	var trackListing;
 	var alternatingRow;
@@ -204,7 +204,7 @@
         if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title) { 
           title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
 		  //set the show title in the header sw 5/30/11
-		  if (getUrlParameter("name") || getUrlParameter("id")) {
+		  if (isSpecificShow) {
 			$("#pageTitle").html(title);
 		  }
         }
@@ -320,8 +320,8 @@
         list.append(
 			'<li class="showInstance">' +
 				'<div class="showTitleContainer"><div class="showTitle">' + 
-					(!title || getUrlParameter("name") || getUrlParameter("id") ?"": title + ", " ) +
-					d_names[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
+					(!title || isSpecificShow ?"": title + ", " ) +
+					dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
 				'</div><div class="clear">.</div></div>' +
 				'<div class="spacer">&nbsp;</div>' +
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
@@ -348,60 +348,6 @@
 					//show/hide the div
 					$("#" + $(this).attr("playListDivId")).toggle();
 					
-					// sw 6/2/11 - removed this code
-					/*
-					// Inside of the click handler, 'this' references the clicked element (anchor tag)
-					// Save a reference to it so we can access it in the AJAX success callback.
-					var anchorTag = $(this);
-					
-					// Unbind the previously added click handler
-					// Do this immediately to prevent double clicks
-					anchorTag.unbind('click');
-					
-					// Show the loading text
-					$('#' + playlistAId).show();
-					
-					$.ajax({
-						url: 'http://kgnu.net/playlist/ajax/getfullplaylistforshowinstance.php',
-						dataType: 'jsonp',
-						data: {
-							showid: showId // Reggae Bloodlines 5/28/11 1 to 4pm
-						},
-						success: function(playlistItems) {
-							// Sort the playlist items by the 'Executed' attribute
-							playlistItems.sort(function(a, b) {
-								return a.Attributes.Executed - b.Attributes.Executed;
-							});
-							
-							// Create a list element to be inserted later
-							var list = $('<ul />');
-							
-							// Add a list element for each playlist item
-							for (var i = 0; i < playlistItems.length; i++) {
-								// Expand this to handle all of the different playlist item types
-								list.append(
-									$('<li>' + playlistItems[i].Type + '</li>')
-								);
-							}
-							
-							// All done; Hide the loading text
-							$('#' + playlistAId).hide();
-							
-							// Add the list element to the content div
-							$('#' + playlistSpanId).append(list);
-							
-							// Bind a new click handler on the anchor tag
-							// to simply toggle the visibility of the list element
-							anchorTag.click(function(eventObject) {
-								list.toggle();
-							});
-						},
-						error: function() {
-							anchorTag.hide();
-							$('#' + playlistDivId).hide();
-							$('#' + playlistDivId).append('<p>There was an error retrieving the playlist.</p>');
-						}
-					});*/
 				}
 				
 				//change the image from "show" to "hide"
@@ -424,31 +370,15 @@
 
   $(function() { 
 	//sw 5/30/11 - if the shows is for all shows, show "Recent Shows" in the header
-	if (!getUrlParameter("name") && !getUrlParameter("id")) {
+	if (!isSpecificShow) {
 		$("#pageTitle").html("Recent Shows");
     }
-    // Populate the default date range...
-    //populateShows('<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>', '<?php echo date('Y-m-d H:i:s'); ?>');
-	//var now = new Date();
-	//var nowStr = now.format("yyyy-mm-dd HH:MM:ss");
-	//get all events in the next day
+    // Make an AJAX call to get recent shows from the server
 	var nowStr = "<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>";
 	var then = new Date();
 	var thenStr = then.format("yyyy-mm-dd HH:MM:ss");
 	populateShows(nowStr, thenStr);
   });
-  
-  //sw 5/30/11 - url parameters function from http://www.netlobo.com/url_query_string_javascript.html
-	function getUrlParameter( name ) {
-	  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-	  var regexS = "[\\?&]"+name+"=([^&#]*)";
-	  var regex = new RegExp( regexS );
-	  var results = regex.exec( window.location.href );
-	  if( results == null )
-		return "";
-	  else
-		return results[1];
-	}
 
   /* ]]> */
   </script>
