@@ -116,14 +116,14 @@
 		
 		//get all events in the next day
 		$em = EventManager::getInstance();
-		$eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"]);
+		$eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"], "Show");
 		
 		foreach ($eventInstance as $ei) {
 			// Whatever the file name is
 			$recordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
 			logText('updating database with file path: checking instance');
 			// Create a new ScheduledShowInstance if $ei is a ScheduledEventInstance
-			if ($ei instanceof ScheduledEventInstance) {
+			if (!$ei instanceof ScheduledShowInstance) {
 				$ei = new ScheduledShowInstance(array(
 					'ScheduledEventId' => $ei->ScheduledEventId,
 					'StartDateTime' => $ei->StartDateTime,
