@@ -1,0 +1,103 @@
+/* sw 5/30/11 - set font for entire page */
+body {
+	font-family:Arial, sans-serif;
+}
+/* sw 6/8/11 - layout for middle section */
+.content {
+	overflow:hidden;
+}
+* html .content { height:1%; } /* clear floats in ie6 */
+.leftColumn {
+	width:100%;
+	float:left;
+	margin-right:-340px;
+}
+.leftColumn .leftColumnContainer {
+	margin-right:350px;
+}
+.rightColumn {
+	width:340px;
+	float:left;
+}
+.leftColumnEdge2 {
+	padding:28px 22px;
+}
+.rightColumnContent, .leftColumnContent {
+	border-left:1px solid #cccc99;
+	border-right:1px solid #cccc99;
+	background:#ffffff;
+}
+.rightColumnEdge1, .leftColumnEdge1 {
+	border-right:1px solid #808080;
+}
+.rightColumnEdge2, .leftColumnEdge2 {
+	border-right:1px solid #C0C0C0;
+}
+.leftColumnBottom, .rightColumnBottom {
+	background:#ffffff;
+	width:100%;
+}
+/* sw 5/29/11 - style for the right column contents */
+.show {
+	 /*margin-left: -35px; */
+	 padding-bottom:8px;
+	 border-bottom:thin dotted #555555;
+	 overflow:hidden;
+}
+* html .show { height:1%; } /* clear floats in ie6 */
+#on_now_content {
+	padding-top:30px;
+}
+#on_now_content ul {
+	margin:0 36px 30px;
+	padding-left:0;
+}
+.on_now_header, .coming_up_header {
+	font-weight:bold; 
+	background-color: #F8F8E0; 
+	color: #009999; 
+	border-bottom:1px solid #555555;
+	/*margin-left:-35px;*/
+	font-size:10pt;
+}
+#coming_up_content ul {
+	margin:0 36px 15px;
+	padding-left:0;
+}
+#on_now_content li, #coming_up_content li {
+	font-size:9pt;
+}
+.show div {
+	padding-left:15px;
+}
+.show .show_title, .show .show_title a {
+	font-weight:bold; 
+	color: #009999;
+	font-size:10pt;
+	padding-top:8px;
+	padding-left:0;
+	padding-bottom:7px;
+	line-height:14px;
+	text-decoration: none;
+}
+.show .show_url {
+	font-size:8pt;
+	padding-left:0;
+	font-weight:normal;
+}
+.show a img {
+	border:none;
+	outline:none;
+}
+.info {
+	position:relative;
+	top:5px;
+}
+.float_container {
+	overflow:hidden;
+}
+* html .float_container { height:1%; } /* clear floats in IE6 */
+.float_right {
+	float:right;
+	display:inline; /* fix double margin bug in ie6 */
+}
