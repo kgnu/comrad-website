@@ -98,7 +98,7 @@
 
 	var trackListing;
 	var alternatingRow;
-  function populatePlaylist(showId, divId, aId)
+  function populatePlaylist(showId, divId, aId, type)
   {
 
     $.get('http://kgnu.net/playlist/ajax/getfullplaylistforshowinstance.php', {
@@ -115,9 +115,10 @@
 
       $('#'+ divId).empty();
 
-	  trackListing = 
-				"<table cellpadding='2' cellspacing='0' style='border-style:collapse' class='playlist'>" +
-				"<tr class='head'><td>Artist</td><td>CD</td><td>Track</td></tr>";
+	  trackListing = "<table cellpadding='2' cellspacing='0' style='border-style:collapse' class='playlist'>";
+	  if (type == "Playlist") {
+		trackListing += "<tr class='head'><td>Artist</td><td>CD</td><td>Track</td></tr>";
+	  }
 	  alternatingRow = false;
       $.each(results, function(index, value) {
 
@@ -259,7 +260,11 @@
 				buttonType="Playlist";
 				break;
 		  }
-          playlist = "<span id=\"" + playlistSpanId + "\" title=\"View Playlist\"><a id=\"" + playlistAId + "\" showId=\"" + showId + "\" playListDivId=\"" + playlistDivId + "\" playlistAId=\"" + playlistAId + "\" href=\"#\"><img src=\"btns/2/Show" + buttonType + ".gif\" /></a></span>";
+          playlist = "<span id=\"" + playlistSpanId + "\" title=\"View Playlist\">" +
+				"<a id=\"" + playlistAId + "\" showId=\"" + showId + "\" playListDivId=\"" + playlistDivId + "\" playlistAId=\"" + playlistAId + "\" type=\"" + buttonType + "\" href=\"#\">" +
+					"<img src=\"btns/2/Show" + buttonType + ".gif\" />" +
+				"</a>" +
+			"</span>";
           //playlist = $('<span id=\"" + divId + "\" title=\"View Playlist\"><a href=\"javascript:;\">Playlist</a></span>').click(function() {
           //	populatePlaylist('" + showId + "', '" + playlistDiv + "');
           //});
@@ -340,8 +345,12 @@
 				//if the playlist has not been populated yet, do so
 				if (!$(this).is("[playlistPopulated]")) {
 					//add a loading notification
-					$("#" + $(this).attr("playListDivId")).append('<div class="loading">Loading Playlist...</div>');
-					populatePlaylist($(this).attr("showId"), $(this).attr("playListDivId"), $(this).attr("playlistAId"));
+					if ($(this).attr("type") == "Playlist") {
+						$("#" + $(this).attr("playListDivId")).append('<div class="loading">Loading Playlist...</div>');
+					} else {
+						$("#" + $(this).attr("playListDivId")).append('<div class="loading">Loading Details...</div>');
+					}
+					populatePlaylist($(this).attr("showId"), $(this).attr("playListDivId"), $(this).attr("playlistAId"), $(this).attr("type"));
 					$(this).attr("playlistPopulated","1");
 				} else {
 				
