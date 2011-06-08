@@ -84,6 +84,9 @@
 		.loading {
 			color:#999;
 		}
+		.loadingImage {
+			text-align:center;
+		}	
 		.priorShows {
 			margin-top:1em;
 			font-size:14pt;

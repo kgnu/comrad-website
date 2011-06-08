@@ -175,6 +175,9 @@
 	  <?php if (isset($event_id)) { ?>,eventparameters: $.toJSON({  'Id': <?php echo $event_id; ?>  }) <?php } ?>
     }, function(results) {
 		
+		//remove the loading image
+		$(".loadingImage").remove();
+		
       if (!results) {
         return;
       }
@@ -393,7 +396,9 @@
   </script>
 
 <div id="shows">
-	<ul class="showInstanceList"></ul>
+	<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>
+	<ul class="showInstanceList">
+	</ul>
 	<div class="priorShows">
 		Looking for shows prior to May 31st, 2011? <a href="http://kgnu.org/ht/listings.html?date=2011-05-30&show=All&host=All&display=list">Go here</a>.
 	</div>
