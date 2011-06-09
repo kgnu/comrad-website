@@ -67,6 +67,9 @@ body {
 #on_now_content li, #coming_up_content li {
 	font-size:9pt;
 }
+.loadingImage {
+	text-align:center;
+}
 .show div {
 	padding-left:15px;
 }
