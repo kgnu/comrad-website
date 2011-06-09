@@ -92,6 +92,21 @@
 			font-size:14pt;
 			margin-left:16px;
 		}
+		
+		/* css for short and long descriptions */
+		.shortDescription {
+			font-size:15px;
+		}
+		.longDescription {
+			font-family:'Calibri',sans-serif !important;
+			font-size:12px;
+		}
+		.longDescription p:first-child { /* won't work in early versions of IE, so this style is just a nice-to-have */
+			margin-top:0;
+		}
+		.longDescription p {
+			margin:.5em 0;
+		}
       </style>
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/jquery/ui/jquery-ui.js"></script>
@@ -661,35 +676,14 @@ $(document).ready(function(){
                           <td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
                         </tr>
 
-                        <tr>
-                          <td colspan=5>
-                            <table border=0 cellspacing=0 cellpadding=0>
-                              <tr>
-                                <td rowspan=3><img src="music/newbanner/tab-off-left-sand.gif" alt="" width=12 height=24 border=0></td>
-                                <td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                                <td width="100%" bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                                <td bgcolor="#AAAA77"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                                <td rowspan=3><img src="music/newbanner/tab-off-right-sand.gif" alt="" width=12 height=24 border=0></td>
-                              </tr>
-                              <tr>
-                                <td bgcolor="#DFDCD7"><a href="rss/spotlight.xml"><img src="graphics/rss.gif" hspace=5 title="Subscribe to a feed of kgnu gnus and events" alt="Subscribe to a feed of kgnu gnus and events" width=16 height=16 border=0></a></td>
-                                <td align="center" bgcolor="#DFDCD7"><font color="#867564" face="Arial, sans-serif" size="-1"></td>
-                                <td bgcolor="#DFDCD7"><a href="http://www.kgnu.org/cgi-bin/spotlightprint.py"><img src="graphics/print_tan.gif" hspace=5 title="Print this list" alt="Print this list" width=16 height=16 border=0></a></td>
-                              </tr>
-                              <tr>
-                                <td bgcolor="#AAAA77" colspan=3 height=1><img src="dot.gif" alt="" height=1 border=0></td>
-                              </tr>
-                            </table>
-                          </td>
-
-                        </tr>
+                        
 
 
                         <tr> <!-- // Box bottoms -->
 
                           <!-- // Box bottom for center-left box -->
                           <td colspan=5 bgcolor="white">
-                            <table width="100%" border=0 cellspacing=0 cellpadding=0>
+                            <table width="100%" border=0 cellspacing=0 cellpadding=0 style="border-top:1px solid #cccc99">
 
                               <tr>
 
