@@ -24,6 +24,8 @@
   <script type="text/javascript">
   /* <![CDATA[ */
 
+	var onNowLoaded = false;
+	var showsLoaded = false;
                
   function populateOnNow () {
 
@@ -34,6 +36,12 @@
 	      if (!results) {
 	        return;
 	      }
+		  
+		  //if everything's loaded, hide the AJAX icon
+		  onNowLoaded = true;
+		  if (showsLoaded) {
+			$(".loadingImage").remove();
+		  }
 
 	      results.sort(function(a, b) {
 	        return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
@@ -168,6 +176,12 @@
       if (!results) {
         return;
       }
+	  
+	  //if everything's loaded, hide the AJAX icon
+	  showsLoaded = true;
+	  if (onNowLoaded) {
+		$(".loadingImage").remove();
+	  }
 
       results.sort(function(a, b) {
         return a.Attributes.StartDateTime - b.Attributes.StartDateTime;
@@ -937,6 +951,7 @@
 															<div class="rightColumnEdge2">
 																<!-- // Links: listen, Playlist, Schedule -->
 																<div id="on_now_content"></div>
+																<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>
 																<div id="coming_up_content"></div>
 															</div>
 														</div>
