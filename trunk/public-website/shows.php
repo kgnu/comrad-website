@@ -324,6 +324,10 @@
           eventRecordedAudioURL = value.Attributes.RecordedFileName;
           player = "<span id=\"" + longTime + "_Player\" title=\"Play and preview track\" class=\"jplayer-albumdetails\"><a id=\"" + longTime + "_PlayButton\" class=\"jplay-button play\" onClick=\"SampleSelected('http://www.kgnu.net/audioarchives/" + eventRecordedAudioURL + "', this);\" href=\"javascript:;\"></a></span>";
         }
+		
+		if(!shortDescription && !longDescription && !player) {
+			return;
+		}
                 
         list.append(
 			'<li class="showInstance">' +
@@ -333,7 +337,7 @@
 				'</div><div class="clear">.</div></div>' +
 				'<div class="spacer">&nbsp;</div>' +
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
-				(!shortDescription ? '' : '<div class="showDetail">' + shortDescription + '</div>') +
+				(!shortDescription ? '' : '<div class="showDetail shortDescription">' + shortDescription + '</div>') +
 				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>') +
 				'<div class="showDetail playlistContainer">' + playlist + '</div>' +
 				'<div class="showDetail">' + player + '</div>' +
