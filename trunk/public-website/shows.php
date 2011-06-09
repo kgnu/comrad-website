@@ -155,10 +155,12 @@
 	  trackListing += "</table>";
 	  $('#' + divId + " .loading").remove();
 	  $('#'+ divId).append(trackListing);
+	  
+	  //setup the playlist to automatically refresh every five minutes
+		setTimeout('populatePlaylist("' + showId + '","' + divId + '","' + aId + '","' + type + '")',1000 * 60 * 5);
     }, 'jsonp');
 
     //setNewClickAction(divId, aId);
-    $('#'+ divId).show();
 
       // $('#'+ divId).html(results);
       // $('#'+ divId).show();
@@ -357,6 +359,7 @@
 					} else {
 						$("#" + $(this).attr("playListDivId")).append('<div class="loading">Loading Details...</div>');
 					}
+					$('#'+ $(this).attr("playListDivId")).show();
 					populatePlaylist($(this).attr("showId"), $(this).attr("playListDivId"), $(this).attr("playlistAId"), $(this).attr("type"));
 					$(this).attr("playlistPopulated","1");
 				} else {
