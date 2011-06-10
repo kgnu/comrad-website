@@ -202,6 +202,22 @@
         var startMonth = startTime.getMonth();
         startMonth++;
         var startYear = startTime.getFullYear();
+		var startHour = startTime.getHours();
+		if (startHour == 0) {
+			var amPm = "AM";
+			startHour = "12";
+		} else if (startHour == 12) {
+			var amPm = "PM";
+		} else if (startHour > 12) {
+			var amPm = "PM";
+			startHour = startHour - 12;
+		} else {
+			var amPm = "AM";
+		}
+		var startMinutes = startTime.getMinutes();
+		if (startMinutes < 10) {
+			startMinutes = "0" + startMinutes.toString();
+		}
 
         /**
          * Get the Show Title
@@ -305,8 +321,11 @@
          */
         var hostURL;
         if (hostId && hostName) {
-          hostURL = "<a href=\"hosts.php?id=" + hostId + 
-                    "\" title=\"Click for all " + hostName + "'s shows\">" + hostName + "</a>"; 
+          hostURL = //"<a href=\"hosts.php?id=" + hostId + //sw temporarily removed host link 6/10/11
+                    //"\" title=\"Click for all " + hostName + "'s shows\">" + 
+					hostName 
+					//+ "</a>"
+					; 
         }
         if (hostURL) {
           hostName = hostURL;
@@ -336,6 +355,7 @@
 				'<div class="showTitleContainer"><div class="showTitle">' + 
 					(!title || isSpecificShow ?"": title + ", " ) +
 					dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
+					(isSpecificShow ? "" : " " + startHour + ":" + startMinutes + " " + amPm) +
 				'</div><div class="clear">.</div></div>' +
 				'<div class="spacer">&nbsp;</div>' +
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
