@@ -125,8 +125,10 @@
 	         */
 	        var hostURL;
 	        if (hostId && hostName) {
-	        hostURL = "<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
-	                  "\" title=\"Click for all " + hostName + "'s shows\">" + hostName + "</a>"; 
+	        hostURL = //"<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
+	                  //"\" title=\"Click for all " + hostName + "'s shows\">" + 
+					  hostName //+ "</a>"
+					  ; 
 	        }
 	        if (hostURL) {
 	          hostName = hostURL;
@@ -297,8 +299,10 @@
          */
         var hostURL;
         if (hostId && hostName) {
-        hostURL = "<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
-                  "\" title=\"Click for all " + hostName + "'s shows\">" + hostName + "</a>"; 
+        hostURL = //"<a href=\"http://www.kgnu.org/hosts.php?id=" + hostId + 
+                  //"\" title=\"Click for all " + hostName + "'s shows\">" + 
+				  hostName //+ "</a>"
+				  ; 
         }
         if (hostURL) {
           hostName = hostURL;
