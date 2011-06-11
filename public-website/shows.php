@@ -360,30 +360,39 @@
 				'<div class="spacer">&nbsp;</div>' +
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
 				(!shortDescription ? '' : '<div class="showDetail shortDescription">' + shortDescription + '</div>') +
-				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>') +
-				'<div class="showDetail playlistContainer">' + playlist + '</div>'
+				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>')
 			).append(player).append(
+				'<div class="showDetail playlistContainer">' + playlist + '</div>' +
 				'<div id="' + playlistDivId + '" class="showDetail">' + '</div>'
 			) //sw 6/5/11 changed
 		);
 		
 		// Initialize the player
 		if (eventRecordedAudioURL !== undefined) {
-			var playerContainer = $('<div/>');
+			var playerContainer = $('<div class="jplayer" />');
 			player.append(playerContainer);
 			player.append($('<div class="jp-audio ' + 'instance_' + showId + '"><div class="jp-type-single"><div id="jp_interface_1" class="jp-interface"><div class="jp-video-play"></div><table style="width: 100%"><tr><td style="width: 110px"><a href="javascript:void(0);" class="jp-play" tabindex="1">play</a><a href="javascript:void(0);" class="jp-pause" style="display: none" tabindex="1">pause</a><a href="javascript:void(0);" class="jp-stop" tabindex="1">stop</a></td><td><div class="jp-progress"><div class="jp-seek-bar"><div class="jp-play-bar"></div></div></div><div class="jp-time"><div class="jp-duration"></div><div class="jp-current-time"></div></div></td><td style="width: 110px"><a href="javascript:void(0);" class="jp-mute" tabindex="1">mute</a><a href="javascript:void(0);" class="jp-unmute" style="display: none" tabindex="1">unmute</a><div class="jp-volume-bar"><div class="jp-volume-bar-value"></div></div></td></tr></table></div></div></div>'));
-			(function(showId, eventRecordedAudioURL) {
-				playerContainer.jPlayer({
-					solution: 'flash',
-					swfPath: '/swf',
-					cssSelectorAncestor: '.instance_' + showId,
-					ready: function () {
-						$(this).jPlayer("setMedia", {
-							mp3: 'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL
-						});
-					}
+			(function(showId, eventRecordedAudioURL, playerContainer) {
+				// Load the player the first time that the play button is clicked.
+				$('.jp-audio.instance_' + showId + ' .jp-play').click(function() {
+					$(this).unbind('click');
+					playerContainer.jPlayer({
+						solution: 'flash',
+						swfPath: '/swf',
+						cssSelectorAncestor: '.instance_' + showId,
+						play: function () {
+							// Pause all the other players
+							$('.jplayer:not(#' + $(this).attr('id') + ')').jPlayer('pause');
+						},
+						ready: function () {
+							// Set the mp3 url and start playing
+							$(this).jPlayer("setMedia", {
+								mp3: 'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL
+							}).jPlayer('play');
+						}
+					});
 				});
-            })(showId, eventRecordedAudioURL);
+			})(showId, eventRecordedAudioURL, playerContainer);
 		}
 		
 
