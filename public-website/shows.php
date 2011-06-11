@@ -343,7 +343,7 @@
         var eventRecordedAudioURL;
         if (value.Attributes.RecordedFileName) {
           eventRecordedAudioURL = value.Attributes.RecordedFileName;
-          player = "<span id=\"" + longTime + "_Player\" title=\"Play and preview track\" class=\"jplayer-albumdetails\"><a id=\"" + longTime + "_PlayButton\" class=\"jplay-button play\" onClick=\"SampleSelected('http://www.kgnu.net/audioarchives/" + eventRecordedAudioURL + "', this);\" href=\"javascript:;\"></a></span>";
+          player = $('<div class="showDetail" />');
         }
 		
 		if(!shortDescription && !longDescription && !player) {
@@ -351,7 +351,7 @@
 		}
                 
         list.append(
-			'<li class="showInstance">' +
+			$('<li class="showInstance"></li>').append(
 				'<div class="showTitleContainer"><div class="showTitle">' + 
 					(!title || isSpecificShow ?"": title + ", " ) +
 					dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
@@ -361,10 +361,31 @@
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
 				(!shortDescription ? '' : '<div class="showDetail shortDescription">' + shortDescription + '</div>') +
 				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>') +
-				'<div class="showDetail playlistContainer">' + playlist + '</div>' +
-				'<div class="showDetail">' + player + '</div>' +
-				'<div id="' + playlistDivId + '" class="showDetail">' + '</div>' +
-			 '</li>'); //sw 6/5/11 changed
+				'<div class="showDetail playlistContainer">' + playlist + '</div>'
+			).append(player).append(
+				'<div id="' + playlistDivId + '" class="showDetail">' + '</div>'
+			) //sw 6/5/11 changed
+		);
+		
+		// Initialize the player
+		if (eventRecordedAudioURL !== undefined) {
+			var playerContainer = $('<div/>');
+			player.append(playerContainer);
+			player.append($('<div class="jp-audio ' + 'instance_' + showId + '"><div class="jp-type-single"><div id="jp_interface_1" class="jp-interface"><div class="jp-video-play"></div><table style="width: 100%"><tr><td style="width: 110px"><a href="javascript:void(0);" class="jp-play" tabindex="1">play</a><a href="javascript:void(0);" class="jp-pause" style="display: none" tabindex="1">pause</a><a href="javascript:void(0);" class="jp-stop" tabindex="1">stop</a></td><td><div class="jp-progress"><div class="jp-seek-bar"><div class="jp-play-bar"></div></div></div><div class="jp-time"><div class="jp-duration"></div><div class="jp-current-time"></div></div></td><td style="width: 110px"><a href="javascript:void(0);" class="jp-mute" tabindex="1">mute</a><a href="javascript:void(0);" class="jp-unmute" style="display: none" tabindex="1">unmute</a><div class="jp-volume-bar"><div class="jp-volume-bar-value"></div></div></td></tr></table></div></div></div>'));
+			(function(showId, eventRecordedAudioURL) {
+				playerContainer.jPlayer({
+					solution: 'flash',
+					swfPath: '/swf',
+					cssSelectorAncestor: '.instance_' + showId,
+					ready: function () {
+						$(this).jPlayer("setMedia", {
+							mp3: 'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL
+						});
+					}
+				});
+            })(showId, eventRecordedAudioURL);
+		}
+		
 
 		// Add a click handler to the anchor tag inside of the content div
 		if (playlistAId) {

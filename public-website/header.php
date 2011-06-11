@@ -15,7 +15,8 @@
     <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
 
     <link rel="StyleSheet" href="css/default.css" type="text/css" />
-    <link rel="StyleSheet" href="http://www.jplayer.org/latest/skin/jplayer.blue.monday.css" type="text/css" />
+    <!-- <link rel="StyleSheet" href="http://www.jplayer.org/latest/skin/jplayer.blue.monday.css" type="text/css" /> -->
+    <link rel="StyleSheet" href="css/kgnu.jplayer/kgnu.jplayer.css" type="text/css" />
     <style type="text/css">
         body {background-image: none;}
 		/* sw 5/30/11 */
@@ -116,32 +117,10 @@
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.inspector.js"></script>
 
-<script type="text/javascript">
-//<![CDATA[
-$(document).ready(function(){
-
-	$("#jquery_jplayer").jPlayer({
-		ready: function () {
-			$(this).jPlayer("setMedia", {
-				mp3: "http://www.kgnu.org/media/sophieserafino5-01.mp3"
-			});
-		},
-		ended: function (event) {
-			$(this).jPlayer("play");
-		},
-		swfPath: "/swf",
-		supplied: "mp3"
-	});
-
-	$("#jplayer_inspector").jPlayerInspector({jPlayer:$("#jquery_jplayer_1")});
-});
-//]]>
-</script>
-
  
   <style type="text/css">
 
-	.jplay-button,	.play-all {
+/*	.jplay-button,	.play-all {
 		display:block;
 		height:17px;
 	}
@@ -168,7 +147,7 @@ $(document).ready(function(){
 
 	.jplayer-topsongs .stop	{
 		background:transparent url(http://www.kgnu.org/media/topsongs.gif) no-repeat 0 -17px;
-	}
+	}*/
 
   </style>
  
