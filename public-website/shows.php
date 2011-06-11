@@ -139,6 +139,8 @@
 							var artist;
 							if (value.Attributes.Track.Attributes.Album.Attributes.Artist) {
 								artist = value.Attributes.Track.Attributes.Album.Attributes.Artist;
+							} else if (value.Attributes.Track.Attributes.Artist) {
+								artist = value.Attributes.Track.Attributes.Artist;
 							}
 							var cd;
 							if (value.Attributes.Track.Attributes.Album.Attributes.Title) {
