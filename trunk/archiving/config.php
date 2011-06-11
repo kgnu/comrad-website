@@ -23,7 +23,7 @@
 	$destination = "/srv2/www/kgnu/audioarchives/";
 	
 	//the HTTP address to the destination folder specified above:
-	$httpDestination = "http://kgnu.net/audioarchives/";
+	$httpDestination = "";
 	
 	//the destination folder to store RSS feeds
 	$rssFilePath = "/srv2/www/kgnu/podcasts/"; 
