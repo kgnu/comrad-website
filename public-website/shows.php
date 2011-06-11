@@ -110,7 +110,7 @@
       }
 
       results.sort(function(a, b) {
-        return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
+        return a.Attributes.Executed - b.Attributes.Executed;
       });
 
       $('#'+ divId).empty();
