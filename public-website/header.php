@@ -75,6 +75,9 @@
 			border:1px solid #444;
 			width:100%;
 		}
+		.playlist td {
+			border-bottom: 1px solid #CCC;
+		}
 		.playlist .head {
 			font-weight:bold;
 			background-color:#B7BBC4;
@@ -92,6 +95,24 @@
 			margin-top:1em;
 			font-size:14pt;
 			margin-left:16px;
+		}
+		
+		.voicebreak, .underwriting, .feature, .comment, .psa {
+			padding-left: 40px;
+			font-weight: bold;
+			background-color: #F8F8E0;
+			border: 0;
+			color: #099;
+			font-style: italic;
+		}
+		
+		table.playlist td.comment {
+			border-bottom: none;
+		}
+		
+		.comment-body {
+			padding-left: 60px;
+			background-color: #F8F8E0;
 		}
 		
 		/* css for short and long descriptions */

@@ -101,60 +101,86 @@
   function populatePlaylist(showId, divId, aId, type)
   {
 
-    $.get('http://kgnu.net/playlist/ajax/getfullplaylistforshowinstance.php', {
-      showid: showId
-    }, function(results) {
+		$.get('http://kgnu.net/playlist/ajax/getfullplaylistforshowinstance.php', {
+			showid: showId
+		}, function(results) {
+		
+		if (!results) {
+			return;
+		}
+		
+		results.sort(function(a, b) {
+			return a.Attributes.Executed - b.Attributes.Executed;
+		});
 
-      if (!results) {
-        return;
-      }
-
-      results.sort(function(a, b) {
-        return a.Attributes.Executed - b.Attributes.Executed;
-      });
-
-      $('#'+ divId).empty();
-
-	  trackListing = "<table cellpadding='2' cellspacing='0' style='border-style:collapse' class='playlist'>";
-	  if (type == "Playlist") {
-		trackListing += "<tr class='head'><td>Artist</td><td>CD</td><td>Track</td></tr>";
-	  }
-	  alternatingRow = false;
-      $.each(results, function(index, value) {
-
-        if (value.Type) {
-          var playlistType = value.Type;
-          if (playlistType == "TrackPlay") {
-
-            if (value.Attributes.Track && value.Attributes.Track.Type && value.Attributes.Track.Type == "Track" && value.Attributes.Track.Attributes) {
-              var track = value.Attributes.Track.Attributes.Title;
-              
-              var artist;
-              if (value.Attributes.Track.Attributes.Album.Attributes.Artist) {
-                artist = value.Attributes.Track.Attributes.Album.Attributes.Artist;
-              }
-              var cd;
-              if (value.Attributes.Track.Attributes.Album.Attributes.Title) {
-                cd = value.Attributes.Track.Attributes.Album.Attributes.Title;
-              }
+		$('#'+ divId).empty();
+		
+		var playlistTable = $('<table cellpadding="2" cellspacing="0" style="border-style:collapse" class="playlist"></table>');
+		playlistTable.append('<tr class="head"><td>Artist</td><td>CD</td><td>Track</td></tr>');
+	
+		// trackListing = "<table cellpadding='2' cellspacing='0' style='border-style:collapse' class='playlist'>";
+		// if (type == "Playlist") {
+		// 	trackListing += "<tr class='head'><td>Artist</td><td>CD</td><td>Track</td></tr>";
+		// }
+		// alternatingRow = false;
+		
+		var trackCounter = 0; // To alternate track row shading
+		
+		$.each(results, function(index, value) {
+			if (value.Type) {
+				var playlistType = value.Type;
+				console.log(playlistType);
 				
-			  trackListing += "<tr " + (alternatingRow ? 'class="alternatingRow"' : '') + ">" +
-								"<td>" + (!artist?"": artist) + "</td>" +
-								"<td>" + (!cd?"": cd) + "</td>" +
-								"<td>" + track + "</td>" +
-							  "</tr>";
-			  if (alternatingRow) {
-				alternatingRow = false;
-			  } else {
-				alternatingRow = true;
-			  }
-            }
-          }
-        }
-      });
-	  trackListing += "</table>";
+				switch (playlistType) {
+					case 'TrackPlay':
+						if (value.Attributes.Track && value.Attributes.Track.Type && value.Attributes.Track.Type == "Track" && value.Attributes.Track.Attributes) {
+							var track = value.Attributes.Track.Attributes.Title;
+						
+							var artist;
+							if (value.Attributes.Track.Attributes.Album.Attributes.Artist) {
+								artist = value.Attributes.Track.Attributes.Album.Attributes.Artist;
+							}
+							var cd;
+							if (value.Attributes.Track.Attributes.Album.Attributes.Title) {
+								cd = value.Attributes.Track.Attributes.Album.Attributes.Title;
+							}
+							
+							playlistTable.append('<tr' + ((trackCounter + 1) % 2 == 0 ? ' class="alternatingRow"' : '') + '><td>' + (!artist?"": artist) + '</td><td>' + (!cd?"": cd) + '</td><td>' + track + '</td></tr>');
+							trackCounter++;
+						}
+						break;
+					
+					case 'VoiceBreak':
+						playlistTable.append('<tr><td colspan="3" class="voicebreak">Voice Break</td></tr>');
+						break;
+					
+					case 'DJComment':
+						playlistTable.append('<tr><td colspan="3" class="comment">Comment:</td></tr>');
+						playlistTable.append('<tr><td colspan="3" class="comment-body">' + value.Attributes.Body + '</td></tr>')
+						break;
+					
+					case 'ScheduledFeatureInstance':
+						playlistTable.append('<tr><td colspan="3" class="feature">' + value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title + '</td></tr>');
+						break;
+					
+					case 'ScheduledUnderwritingInstance':
+						playlistTable.append('<tr><td colspan="3" class="underwriting">Underwriting: ' + value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title + '</td></tr>');
+						break;
+						
+					case 'FloatingShowEvent':
+						switch (value.Attributes.Event.Type) {
+							case 'PSAEvent':
+								playlistTable.append('<tr><td colspan="3" class="psa">PSA: ' + value.Attributes.Event.Attributes.Title + '</td></tr>');
+								break;
+						}
+						break;
+				}
+			}
+		});
+
+	  // trackListing += "</table>";
 	  $('#' + divId + " .loading").remove();
-	  $('#'+ divId).append(trackListing);
+	  $('#'+ divId).append(playlistTable);
 	  
 	  //setup the playlist to automatically refresh every five minutes
 		setTimeout('populatePlaylist("' + showId + '","' + divId + '","' + aId + '","' + type + '")',1000 * 60 * 5);
