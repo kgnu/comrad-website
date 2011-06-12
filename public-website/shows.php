@@ -1,69 +1,11 @@
 <?php
-  
-  if (isset($_GET['id'])) {
-    $event_id = strtolower($_GET['id']);
-  }
 
-  if (isset($_GET['name'])) {
-    $show_name = strtolower($_GET['name']);
-    switch ($show_name)
-    {
-    case "asa":
-      $event_id = 1;
-      break;
-    case "afternoonsound":
-      $event_id = 1;
-      break;
-    case "sleepless":
-      $event_id = 21;
-      break;
-    case "restless":
-      $event_id = 22;
-      break;
-    case "honktonk":
-      $event_id = 23;
-      break;
-    case "gospel":
-      $event_id = 24;
-      break;
-    case "bluegrass":
-      $event_id = 25;
-      break;
-    case "rootsandbranches":
-      $event_id = 26;
-      break;
-    case "etown":
-      $event_id = 27;
-      break;
-    case "tributaries":
-      $event_id = 28;
-      break;
-    case "terrasonic":
-      $event_id = 29;
-      break;
-    case "livingdialogs":
-      $event_id = 30;
-      break;
-    case "reggae":
-      $event_id = 31;
-      break;
-    case "celtic":
-      $event_id = 32;
-      break;
-    case "musica":
-      $event_id = 33;
-      break;
-    case "morningsound":
-	case "msa":
-	  $event_id = 67;
-	  break;
-    }
-  }
-  
-  $event_type = 'Show';
-  if (isset($_GET['type'])) {
-    $event_type = $_GET['type'];
-  }
+	if (isset($_GET['name'])) {
+		$_GET['name'] = strtolower($_GET['name']);
+		
+		// Restrict show name to lowercase letters and numbers
+		if (preg_match('/^[a-z0-9]+$/', $_GET['name'])) $show_name = $_GET['name'];
+	}
 
 ?>
 
@@ -129,7 +71,6 @@
 		$.each(results, function(index, value) {
 			if (value.Type) {
 				var playlistType = value.Type;
-				console.log(playlistType);
 				
 				switch (playlistType) {
 					case 'TrackPlay':
@@ -199,11 +140,13 @@
   {
   
 	$.get('http://kgnu.net/playlist/ajax/geteventsbetween.php', {
-      start: start,
-      end: end,
-      types: $.toJSON([ 'Show' ])
-	  <?php if (isset($event_id)) { ?>,eventparameters: $.toJSON({  'Id': <?php echo $event_id; ?>  }) <?php } ?>
-    }, function(results) {
+		start: start,
+		end: end,
+		
+		eventparameters: $.toJSON({ 'Source': 'KGNU'<?php if (isset($show_name)): ?>, 'URL': '<?php echo $show_name; ?>'<?php endif; ?> }),
+		
+		types: $.toJSON([ 'Show' ])
+}, function(results) {
 		
 		//remove the loading image
 		$(".loadingImage").remove();
@@ -221,6 +164,7 @@
       var list;
 	  
       $.each(results, function(index, value) {
+	
 		var longTime = value.Attributes.StartDateTime;
         var startTime = new Date(value.Attributes.StartDateTime * 1000);
         var duration = value.Attributes.Duration;
@@ -264,24 +208,20 @@
         /**
          * Get the Show Short Description
          */
-        var shortDescription;
-        if (value.Attributes.ShortDescription) {
-          shortDescription = value.Attributes.ShortDescription;
-        }
-        //if (!shortDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) {
-		//	shortDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription;
-        //}
+        var shortDescription = value.Attributes.ShortDescription ? value.Attributes.ShortDescription : '';
+
+		// Don't show short description unless it is different from the series' short description
+		if (shortDescription == value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) shortDescription = '';
+		
 
         /**
          * Get the Show Long Description
          */
-        var longDescription;
-        if (value.Attributes.LongDescription) {
-          longDescription = value.Attributes.LongDescription;
-        }
-        //if (!longDescription && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) {
-        //   longDescription = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription;
-        //}
+        var longDescription = value.Attributes.LongDescription ? value.Attributes.LongDescription : '';
+
+		// Don't show long description unless it is different from the series' long description
+		if (longDescription == value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) longDescription = '';
+		
 
         /**
          * Get the Show ID
@@ -373,10 +313,11 @@
           eventRecordedAudioURL = value.Attributes.RecordedFileName;
           player = $('<div class="showDetail" />');
         }
+
 		
-		if(!shortDescription && !longDescription && !player) {
-			return;
-		}
+		// if(!shortDescription && !longDescription && !player) {
+		// 	return;
+		// }
                 
         list.append(
 			$('<li class="showInstance"></li>').append(
@@ -470,20 +411,66 @@
 	if (!isSpecificShow) {
 		$("#pageTitle").html("Recent Shows");
     }
-    // Make an AJAX call to get recent shows from the server
-	var nowStr = "<?php echo max(date('Y-m-d H:i:s', strtotime('-30 day')),date('Y-m-d H:i:s',strtotime('5/31/2011'))); ?>";
-	var then = new Date();
-	var thenStr = then.format("yyyy-mm-dd HH:MM:ss");
-	populateShows(nowStr, thenStr);
+
+	// Make an AJAX call to get recent shows from the server
+	
+	var now = new Date().getTime();
+	
+/*
+	<?php if (array_key_exists('d', $_GET) && preg_match('/^[0-9]+$/', $_GET['d'])): ?>
+	var end = new Date(<?php echo $_GET['d'] ?>);
+	<?php else: ?>
+	var end = new Date(now);
+	<?php endif; ?>
+*/
+	
+	// var end = new Date(<?php echo (array_key_exists('d', $_GET) && preg_match('/[0-9]+/', $_GET['d']) ? $_GET['d'] * 1000 : '') ?>);
+	var end = new Date(now);
+	
+	var cutoff = new Date(2011, 4, 31).getTime() // Don't show shows before May 31st, 2011
+	
+	
+	// Don't allow dates before the cutoff
+	if (end.getTime() < cutoff) {
+		// $('#shows .nav.later').hide();
+		end.setTime(cutoff);
+	} else {
+		// var href = '<?php echo $_SERVER['REQUEST_URI'] ?>?d=' + start.getTime();
+		// $('#shows .nav.later a').attr('href', href);
+		// $('#shows .nav.later').show();
+	}
+	
+	// Don't allow dates in the future
+	if (end.getTime() >= now) {
+		// $('#shows .nav.earlier').hide();
+		end.setTime(now);
+	} else {
+		// var href = '<?php echo $_SERVER['REQUEST_URI'] ?>';
+		// $('#shows .nav.earlier a').attr('href', href).show();
+		// $('#shows .nav.earlier').show();
+	}
+	
+	
+	// Start seven days before the end date or at the cutoff
+	var numDays = (isSpecificShow ? 30 : 7);
+	var start = new Date(Math.max(end.getTime() - numDays * 24 * 60 * 60 * 1000, cutoff)); 
+	
+	populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
   });
 
   /* ]]> */
   </script>
 
 <div id="shows">
+	<div class="nav earlier" style="display: none">
+		<a>View earlier shows</a>
+	</div>
 	<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>
 	<ul class="showInstanceList">
 	</ul>
+	<div class="nav later" style="display: none">
+		<a>View later shows</a>
+	</div>
 	<div class="priorShows">
 		Looking for shows prior to May 31st, 2011? <a href="http://kgnu.org/ht/listings.html?date=2011-05-30&show=All&host=All&display=list">Go here</a>.
 	</div>

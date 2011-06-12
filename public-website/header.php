@@ -311,155 +311,27 @@
     <!-- // LINKS AND CONTENT -->
     <table width="100%" border=0 cellspacing=0 cellpadding=5>
       <tr>
+
         <td width="1%" valign="top"><!--// LEFT LINKS -->
-          <table width="100%" border=0 cellspacing=0 cellpadding=0>
+          <table border=0 cellpadding=0 cellspacing=0>
             <tr>
-              <td><img src="dot.gif" alt="" width=1 height=10 border=0 align="none"></td>
-            </tr>
-            <!--<tr>
-              <td><img src="music/newbanner/tan-color-logo-new.gif" alt="" border=0 height=93 width=120></td>
-            </tr>--> <!--sw 5/30/11 removed -->
-            <tr> 
-              <td>
-                <table border=0 cellpadding=0 cellspacing=0>
-                  <tr>
-                    <td>
-                      <img src="btns/btn1s.gif" alt="home" border=0 width=120 height=22 name="btn1" vspace=1><br>
-                    </td>
-                  </tr>
-                </table>
+              <td height="190">
+                <a href="http://www.kgnu.org"><img src="../btns/btn1.gif" alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br><br>
+                <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="../btns/btn2.gif" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a><br>
+                <a onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a><br>
+                <a href="/ht/support.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="../btns/btn4.gif" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a><br>
+                <a href="/ht/volunteer.html" onMouseOver="GoIn(5);" onMouseOut="GoOut(5);"><img src="../btns/btn5.gif" alt="buy our stuff" border=0 width=175 height=22 name="btn5" vspace=1></a><br>
+                <a href="/ht/buy.html" onMouseOver="GoIn(6);" onMouseOut="GoOut(6);"><img src="../btns/btn6.gif" alt="submit stuff" border=0 width=175 height=22 name="btn6" vspace=1></a><br>
+                <a href="/ht/submit.html" onMouseOver="GoIn(7);" onMouseOut="GoOut(7);"><img src="../btns/btn7.gif" alt="contact us" border=0 width=175 height=22 name="btn7" vspace=1></a><br>
+                <a href="/ht/contact.html" onMouseOver="GoIn(8);" onMouseOut="GoOut(8);"><img src="../btns/btn8.gif" alt="our shows" border=0 width=175 height=22 name="btn8" vspace=1></a><br>
+                <a href="/ht/services.html" onMouseOver="GoIn(9);" onMouseOut="GoOut(9);"><img src="../btns/btn9.gif" alt="our services" border=0 width=175 height=22 name="btn9" vspace=1></a><br>
+                <a href="/ht/aboutus.html" onMouseOver="GoIn(10);" onMouseOut="GoOut(10);"><img src="../btns/btn10.gif" alt="about us" border=0 width=175 height=22 name="btn10" vspace=1></a><br>
+                <a href="/ht/calendarsonline.html" onMouseOver="GoIn(11);" onMouseOut="GoOut(11);"><img src="../btns/btn11.gif" alt="calendars" border=0 width="175" height="22" name="btn11" vspace=1></a><br><br><img src="http://www.kgnu.org/dot.gif" alt="" width=6 height=1 border=0 align="none">
+                <a href="http://www.twitter.com/KGNU" target="_blank"><img src="../graphics/twitter.png" alt="Follow us on Twitter" width="32" height="32" border="0"></a><img src="http://www.kgnu.org/dot.gif" alt="" width=4 height=1 border=0 align="none"><a href="http://www.facebook.com/kgnu.colorado" target="_blank"><img src="../graphics/facebook.png" alt="Facebook" width="32" height="32" border=0></a>
               </td>
             </tr>
-            <tr> 
-              <td height=25><font face="Arial, sans-serif" size="-1" color="#993300"><br>
-              Things To Do</font></td>
-            </tr>
-            <tr> 
-              <td>
-                <table border=0 cellpadding=0 cellspacing=0>
-                  <tr>
-                    <td>
-                      <a href="ht/listencomp.html" OnMouseOver="GoIn(2);" OnMouseOut="GoOut(2);"><img src="btns/btn2.gif" alt="listen" border=0 width=120 height=22 name="btn2" vspace=1></a><br>
-                      <a href="ht/support.html" OnMouseOver="GoIn(3);" OnMouseOut="GoOut(3);"><img src="btns/btn3.gif" alt="support us" border=0 width=120 height=22 name="btn3" vspace=1></a><br>
-                      <a href="ht/volunteer.html" OnMouseOver="GoIn(4);" OnMouseOut="GoOut(4);"><img src="btns/btn4.gif" alt="volunteer" border=0 width=120 height=22 name="btn4" vspace=1></a><br>
-                      <a href="ht/buy.html" OnMouseOver="GoIn(5);" OnMouseOut="GoOut(5);"><img src="btns/btn5.gif" alt="buy our stuff" border=0 width=120 height=22 name="btn5" vspace=1></a><br>
-                      <a href="ht/submit.html" OnMouseOver="GoIn(7);" OnMouseOut="GoOut(7);"><img src="btns/btn7.gif" alt="submit stuff" border=0 width=120 height=22 name="btn7" vspace=1></a><br>
-                      <a href="ht/contact.html" OnMouseOver="GoIn(13);" OnMouseOut="GoOut(13);"><img src="btns/btn13.gif" alt="contact us" border=0 width=120 height=22 name="btn13" vspace=1></a><br>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr> 
-              <td height=25><font face="Arial, sans-serif" size="-1" color="#993300"><br>
-              Our Information</font></td>
-            </tr>
-            <tr> 
-              <td>
-                <table border=0 cellpadding=0 cellspacing=0>
-                  <tr>
-                    <td>
-                      <a href="ht/showslist.html" OnMouseOver="GoIn(8);" OnMouseOut="GoOut(8);"><img src="btns/btn8.gif" alt="our shows" border=0 width=120 height=22 name="btn8" vspace=1></a><br>
-                      <a href="ht/services.html" OnMouseOver="GoIn(10);" OnMouseOut="GoOut(10);"><img src="btns/btn10.gif" alt="our services" border=0 width=120 height=22 name="btn10" vspace=1></a><br>
-                      <a href="ht/aboutus.html" OnMouseOver="GoIn(12);" OnMouseOut="GoOut(12);"><img src="btns/btn12.gif" alt="about us" border=0 width=120 height=22 name="btn12" vspace=1></a><br>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <tr> 
-              <td height=25><font face="Arial, sans-serif" size="-1" color="#993300"><br>
-              Concerts & More</font></td>
-            </tr>
-            <tr> 
-              <td>
-
-                <table border=0 cellpadding=0 cellspacing=0>
-                  <tr>
-                    <td>
-
-                      <a href="ht/calendarsonline.html" OnMouseOver="GoIn(15);" OnMouseOut="GoOut(15);"><img src="btns/btn15.gif" alt="calendars" border=0 width="120" height="22" name="btn15" vspace=1></a><br>
-                    </td>
-                  </tr>
-                  
-                </table>
-              </td>
-            </tr>
-            <tr> 
-              <td height=25>
-                <p><font face="Arial, sans-serif" size="-1" color="#993300"><br>
-                  Search KGNU.org:</font></p></td>
-            </tr>
-            <tr> 
-              <td align="center">
-                <!-- // SiteSearch Google -->
-                <form method=GET action="http://www.google.com/search">
-                  <!-- Note: in IE, the form adds extra space below its content -->
-                  <input type=hidden name=ie value=UTF-8>
-                  <input type=hidden name=oe value=UTF-8>
-                  <input type=hidden name=domains value="kgnu.org">
-                  <input type=hidden name=sitesearch value="kgnu.org">
-                  <input type=text name=q size=15 maxlength=255 value="" alt="search string entry field"><br>
-                  <img src="graphics/google.gif" alt="google" border=0 width=42 height=13>
-                  <input type=submit name=btnG value="Find">
-                </form>
-              </td>
-            </tr>
-                        <tr> 
-              <td align="center"><a href="http://kgnu.org/cgi-bin/moreinfo.py?Notice=1254776487"><img src="images/supporters/kgnu-visa-card.gif" border="0"></td>
-            </tr>  
-            <tr> 
-              <td height=25><font face="Arial, sans-serif" size="-1" color="#993300"><br>
-              <br>
-                <br>
-              Support From:</font></td>
-            </tr>
-                        <tr> 
-              <td align="center"><a href="http://www.mountainsunpub.com/" target="_blank"><img src="images/supporters/sponsor-mtnsun.gif" border="0"></td>
-            </tr>  
-            <tr> 
-              <td align="center"><a href="http://www.solarips.com" target="_blank"><img src="images/supporters/sponsor-IPS.gif" border="0"></a></td>
-            </tr>
-            <!-- <tr>
-                          <td align="center">
-                              <a href="http://www.ecometro.com/denver/default.aspx" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-ecometro.gif" border="0">
-                            </td>
-                        </tr>-->
-             <tr> 
-              <td align="center"><a href="http://www.gayandlesbianfund.org/" target="_blank"><img src="images/supporters/sponsor-gaylesbianfund.gif" border="0"></a></td>
-            </tr>  
-                        <tr> 
-              <td align="center"><a href="http://www.eduproject.com/" target="_blank"><img src="images/supporters/sponsor-ebook.gif" border="0"></a></td>
-            </tr>  
-            <tr>
-              <td align="center"><a href="http://www.cshares.org" target="_blank"><img src="images/supporters/sponsor-comm-shares.gif" width="120" height="74" border="0"></a></td>
-                      </tr>
-            <tr> 
-              <td align="center"><a href="http://www.bouldercountyarts.org" target="_blank"><img src="images/supporters/sponsor-bocoarts.gif" border="0"></a></td>
-            </tr>  
-                   <!--  <tr> 
-              <td align="center"><a href="http://www.indianpeaksspringwater.com/" target="_blank"><img src="http://www.kgnu.org/images/supporters/sponsor-indianpeaks.gif" border="0"></td>
-            </tr> -->
-              <tr> 
-                    <td height=25><p>&nbsp;</p>
-                      <p>&nbsp;</p>
-                    </td>
-              </tr>
-
-<!--              <td align="center">
-                  <a href="http://coblues.com" target="_blank">
-                    <img src="graphics/supporters/Colorado Blues Society coblues.com.gif" alt="Colorado Blues Society" title="Colorado Blues Society" border=0 width=120 vspace=3>
-                    <font face="Arial, sans-serif" color="#009999" size="-1">
-                      Colorado Blues Society
-                    </font>
-                  </a>
-              </td>
-            </tr>
--->
-
           </table>
         </td>
-
 
 
         <td valign="top" align="center" width="100%">
