@@ -156,24 +156,30 @@
       }
 	  
 	  results.sort(function(a, b) {
-        return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
-      });
+		return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
+	  });
 
-      var lastDate;
-      var dateContainer;
-      var list;
+	  var lastDate;
+	  var dateContainer;
+	  var list;
 	  
-      $.each(results, function(index, value) {
-	
+	  $.each(results, function(index, value) {
+	  
+		//skip the first show if we're lazy loading more shows, since that show will already
+		//be displayed
+		if (loadingMoreShows && index == 0) {
+			return;
+		}
+
 		var longTime = value.Attributes.StartDateTime;
-        var startTime = new Date(value.Attributes.StartDateTime * 1000);
-        var duration = value.Attributes.Duration;
-        var endTime = new Date(startTime.getTime() + duration * 60 * 1000);
-        var startDay = startTime.getDay();
-        var startDate = startTime.getDate();
-        var startMonth = startTime.getMonth();
-        startMonth++;
-        var startYear = startTime.getFullYear();
+		var startTime = new Date(value.Attributes.StartDateTime * 1000);
+		var duration = value.Attributes.Duration;
+		var endTime = new Date(startTime.getTime() + duration * 60 * 1000);
+		var startDay = startTime.getDay();
+		var startDate = startTime.getDate();
+		var startMonth = startTime.getMonth();
+		startMonth++;
+		var startYear = startTime.getFullYear();
 		var startHour = startTime.getHours();
 		if (startHour == 0) {
 			var amPm = "AM";
@@ -191,51 +197,51 @@
 			startMinutes = "0" + startMinutes.toString();
 		}
 
-        /**
-         * Get the Show Title
-         */
-        var title;
-        if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title) { 
-          title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
+		/**
+		 * Get the Show Title
+		 */
+		var title;
+		if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title) { 
+		  title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
 		  //set the show title in the header sw 5/30/11
 		  if (isSpecificShow) {
 			$("#pageTitle").html(title);
 		  }
-        }
-        
-	    list = $("#shows .showInstanceList");
+		}
+		
+		list = $("#shows .showInstanceList");
 
-        /**
-         * Get the Show Short Description
-         */
-        var shortDescription = value.Attributes.ShortDescription ? value.Attributes.ShortDescription : '';
+		/**
+		 * Get the Show Short Description
+		 */
+		var shortDescription = value.Attributes.ShortDescription ? value.Attributes.ShortDescription : '';
 
 		// Don't show short description unless it is different from the series' short description
 		if (shortDescription == value.Attributes.ScheduledEvent.Attributes.Event.Attributes.ShortDescription) shortDescription = '';
 		
 
-        /**
-         * Get the Show Long Description
-         */
-        var longDescription = value.Attributes.LongDescription ? value.Attributes.LongDescription : '';
+		/**
+		 * Get the Show Long Description
+		 */
+		var longDescription = value.Attributes.LongDescription ? value.Attributes.LongDescription : '';
 
 		// Don't show long description unless it is different from the series' long description
 		if (longDescription == value.Attributes.ScheduledEvent.Attributes.Event.Attributes.LongDescription) longDescription = '';
 		
 
-        /**
-         * Get the Show ID
-         */
-        var playlist = "";
-        var playlistSpanId = "";
-        var playlistDivId = "";
-        var playlistAId;
-        var showId;
-        if (value.Attributes.Id) {
-          showId = value.Attributes.Id;
-          playlistSpanId = longTime + "_PlaylistSpanId";
-          playlistDivId = longTime + "_PlaylistDivId";
-          playlistAId = longTime + "_PlaylistAId";
+		/**
+		 * Get the Show ID
+		 */
+		var playlist = "";
+		var playlistSpanId = "";
+		var playlistDivId = "";
+		var playlistAId;
+		var showId;
+		if (value.Attributes.Id) {
+		  showId = value.Attributes.Id;
+		  playlistSpanId = longTime + "_PlaylistSpanId";
+		  playlistDivId = longTime + "_PlaylistDivId";
+		  playlistAId = longTime + "_PlaylistAId";
 		  //determine the button type to show
 		  var buttonType;
 		  switch (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Category) {
@@ -249,77 +255,77 @@
 				buttonType="Playlist";
 				break;
 		  }
-          playlist = "<span id=\"" + playlistSpanId + "\" title=\"View Playlist\">" +
+		  playlist = "<span id=\"" + playlistSpanId + "\" title=\"View Playlist\">" +
 				"<a id=\"" + playlistAId + "\" showId=\"" + showId + "\" playListDivId=\"" + playlistDivId + "\" playlistAId=\"" + playlistAId + "\" type=\"" + buttonType + "\" href=\"#\">" +
 					"<img src=\"btns/2/Show" + buttonType + ".gif\" />" +
 				"</a>" +
 			"</span>";
-          //playlist = $('<span id=\"" + divId + "\" title=\"View Playlist\"><a href=\"javascript:;\">Playlist</a></span>').click(function() {
-          //	populatePlaylist('" + showId + "', '" + playlistDiv + "');
-          //});
-        }
+		  //playlist = $('<span id=\"" + divId + "\" title=\"View Playlist\"><a href=\"javascript:;\">Playlist</a></span>').click(function() {
+		  //	populatePlaylist('" + showId + "', '" + playlistDiv + "');
+		  //});
+		}
 
-        /**
-         * Get the Host ID
-         */
-        var hostId;
-        if (value.Attributes.HostId) {
-          hostId = value.Attributes.HostId;
-        }
-        if (!hostId && value.Attributes.Host && value.Attributes.Host.Attributes.UID) {
-          hostId = value.Attributes.Host.Attributes.UID;
-        }
-        if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId) {
-          hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId;
-        }
+		/**
+		 * Get the Host ID
+		 */
+		var hostId;
+		if (value.Attributes.HostId) {
+		  hostId = value.Attributes.HostId;
+		}
+		if (!hostId && value.Attributes.Host && value.Attributes.Host.Attributes.UID) {
+		  hostId = value.Attributes.Host.Attributes.UID;
+		}
+		if (!hostId && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId) {
+		  hostId = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.HostId;
+		}
 
-        /**
-         * Get the Host Name
-         */
-        var hostName;
-        if (value.Attributes.Host && value.Attributes.Host.Attributes.Name) {
-          hostName = value.Attributes.Host.Attributes.Name;
-        }
-        if (!hostName && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
-          hostName = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.Name;
-        }
+		/**
+		 * Get the Host Name
+		 */
+		var hostName;
+		if (value.Attributes.Host && value.Attributes.Host.Attributes.Name) {
+		  hostName = value.Attributes.Host.Attributes.Name;
+		}
+		if (!hostName && value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host) {
+		  hostName = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Host.Attributes.Name;
+		}
 
-        /**
-         *
-         */
-        var hostURL;
-        if (hostId && hostName) {
-          hostURL = //"<a href=\"hosts.php?id=" + hostId + //sw temporarily removed host link 6/10/11
-                    //"\" title=\"Click for all " + hostName + "'s shows\">" + 
+		/**
+		 *
+		 */
+		var hostURL;
+		if (hostId && hostName) {
+		  hostURL = //"<a href=\"hosts.php?id=" + hostId + //sw temporarily removed host link 6/10/11
+					//"\" title=\"Click for all " + hostName + "'s shows\">" + 
 					hostName 
 					//+ "</a>"
 					; 
-        }
-        if (hostURL) {
-          hostName = hostURL;
-        }
+		}
+		if (hostURL) {
+		  hostName = hostURL;
+		}
 
-        /**
-         * Get the Show Recorded Audio
-         */
-        var eventHasRecordedAudio;
-        if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.RecordAudio) {
-          eventHasRecordedAudio = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.RecordAudio;
-        }
+		/**
+		 * Get the Show Recorded Audio
+		 */
+		var eventHasRecordedAudio;
+		if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.RecordAudio) {
+		  eventHasRecordedAudio = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.RecordAudio;
+		}
 
-        var player = "";
-        var eventRecordedAudioURL;
-        if (value.Attributes.RecordedFileName) {
-          eventRecordedAudioURL = value.Attributes.RecordedFileName;
-          player = $('<div class="showDetail" />');
-        }
+		var player = "";
+		var eventRecordedAudioURL;
+		if (value.Attributes.RecordedFileName) {
+		  eventRecordedAudioURL = value.Attributes.RecordedFileName;
+		  player = $('<div class="showDetail" />');
+		}
 
 		
 		// if(!shortDescription && !longDescription && !player) {
 		// 	return;
 		// }
-                
-        list.append(
+				
+		list.append(
 			$('<li class="showInstance"></li>').append(
 				'<div class="showTitleContainer"><div class="showTitle">' + 
 					(!title || isSpecificShow ?"": title + ", " ) +
@@ -402,10 +408,11 @@
 				}
 			}); 
 		}
-      });
+	  });
+	  loadingMoreShows = false;
     }, 'jsonp');
   }
-
+  
   $(function() { 
 	//sw 5/30/11 - if the shows is for all shows, show "Recent Shows" in the header
 	if (!isSpecificShow) {
@@ -452,11 +459,28 @@
 	
 	
 	// Start seven days before the end date or at the cutoff
-	var numDays = (isSpecificShow ? 30 : 7);
+	var numDays = (isSpecificShow ? 30 : 1);
 	var start = new Date(Math.max(end.getTime() - numDays * 24 * 60 * 60 * 1000, cutoff)); 
+	showsStartDate = start;
 	
 	populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
+	
+	//sw 6/20/11 - 
+	$(window).scroll(function() {
+		if ($(window).scrollTop() + $(window).height() >= $('.showInstanceList .showInstance:last-child').offset().top) {
+			if (!loadingMoreShows) {
+				loadingMoreShows = true;
+				$(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
+				var end = showsStartDate;
+				var start = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff)); //get 12 horus worth of shows
+				showsStartDate = start;
+				populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
+			}
+		}
+	});
   });
+  var loadingMoreShows = false;
+  var showsStartDate;
 
   /* ]]> */
   </script>
