@@ -9,7 +9,7 @@
 	$logFile = "/srv2/www/cgi-bin/archivingLog.txt";
 	
 	//the maximum number of lines for the log file
-	$logFileMaxLines = 10000;
+	$logFileMaxLines = 5000;
 	
 	//this file is a text file that stores text data of the upcoming events
 	$upcomingEventsFile = "/srv2/www/kgnu/audioarchives/upcomingEvents.txt"; 
