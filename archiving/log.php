@@ -29,7 +29,7 @@
 			$fh = fopen($logFile, 'r+');
 			//read the file's contents to a string
 			$contents = '';
-			while (!feof($fh)) {
+			while (!feof($fh) && strlen($contents) < 8388608 / 2) {
 				$contents .= fread($fh, 8192);
 			}
 			fclose($fh);
