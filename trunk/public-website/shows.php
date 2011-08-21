@@ -368,6 +368,9 @@
 					});
 				});
 			})(showId, eventRecordedAudioURL, playerContainer);
+			
+			// Add the Download mp3 link
+			player.append('<div class="download-link"><a href="http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL + '">Link to mp3</a></div>');
 		}
 		
 
