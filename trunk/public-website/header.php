@@ -1,10 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<!-- // THIS PAGE IS GENERATED AUTOMATICALLY: DO NOT EDIT IT. Edit instead the index_template.html page -->
 <html>
 
   <head>
     <meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
     <title>KGNU Independent Community Radio / 88.5 FM & 1390 AM (Boulder / Denver) / 93.7 FM (Nederland)</title>
+
+    <base href="/">
+
     <meta name="keywords" content="KGNU independent commmunity radio, Boulder, Denver, Free-form, Freeform, Free Form Music, BBC news, Democracy Now, Reggae Bloodlines, Honky Tonk Heroes, Old Grass Gnu Grass, Bluegrass, radio, community radio, Ragtime America">
     <meta name="description" content="KGNU Independent Community Radio broadcasting at 88.5 FM in Boulder and 1390 AM in Denver. Listener supported, volunteer powered community radio.">
     <META name="verify-v1" content="+puZM4YBac9YXeqlsUo0amK5WHLvMOt6bJQdFGP13dM=">
@@ -316,7 +318,7 @@
           <table border=0 cellpadding=0 cellspacing=0>
             <tr>
               <td height="190">
-                <a href="http://www.kgnu.org"><img src="../btns/btn1.gif" alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br><br>
+                <a href="/"><img src="../btns/btn1.gif" alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br><br>
                 <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="../btns/btn2.gif" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a><br>
                 <a onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a><br>
                 <a href="/ht/support.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="../btns/btn4.gif" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a><br>

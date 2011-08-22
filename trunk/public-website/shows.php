@@ -3,7 +3,7 @@
 	if (isset($_GET['name'])) {
 		$_GET['name'] = strtolower($_GET['name']);
 		
-		// Restrict show name to lowercase letters and numbers
+    // Restrict show name to lowercase letters and numbers
 		if (preg_match('/^[a-z0-9]+$/', $_GET['name'])) $show_name = $_GET['name'];
 	}
 
@@ -16,15 +16,30 @@
   /* <![CDATA[ */
   
   <?php
-	//sw 6/6/11 - if the "name" or "id" GET parameters are set, 
-	//we'll show the name of the show
-	//otherwise, we'll show "Recent Shows" as the title
-	//the JavaScript variable isSpecificShow will be used to keep track of this
-	if (isset($_GET["name"]) || isset($_GET["id"])) {
-		echo 'var isSpecificShow = true;';
-	} else {
-		echo 'var isSpecificShow = false;';
-	}
+	  //sw 6/6/11 - if the "name" or "id" GET parameters are set, 
+	  //we'll show the name of the show
+	  //otherwise, we'll show "Recent Shows" as the title
+	  //the JavaScript variable isSpecificShow will be used to keep track of this
+    if (isset($show_name) || isset($_GET["id"])) {
+      echo "var isSpecificShow = true;\n";
+      if (strcmp($show_name, 'invalidshow') == 0) {
+        echo "\tvar isShowValid = false;\n";
+      } else {
+        echo "\tvar isShowValid = true;\n";
+      }
+	  } else {
+	  	echo "var isSpecificShow = false;\n";
+      echo "\tvar isShowValid = true;\n";
+    }
+
+    if (isset($_GET['day']) && isset($_GET['month']) && isset($_GET['year'])) {
+      echo "\tvar isSpecificDate = true;\n";
+      echo "\tvar day = " . $_GET['day'] . ";\n";
+      echo "\tvar month = " . $_GET['month'] . ";\n";
+      echo "\tvar year = " . $_GET['year'] . ";\n";
+    } else {
+      echo "\tvar isSpecificDate = false;\n";
+    }
   ?>
   
   //preload the "Hide" images so that they can display immediately when JavaScript switches
@@ -135,6 +150,22 @@
       // $('#'+ divId).show();
   }
 
+  function setLoading(isLoading) {
+    if(isLoading) {
+      $(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
+    } else {
+      //remove the loading image
+      $(".loadingImage").remove();
+    }
+  }
+
+  function showError(str) {
+    setLoading(false);
+    $(".priorShows").remove();
+    list = $("#shows .showInstanceList");
+    list.append("<center><h2>" + str + "</h2></center>");
+  }
+
 
   function populateShows(start, end)
   {
@@ -148,15 +179,18 @@
 		types: $.toJSON([ 'Show' ])
 }, function(results) {
 		
-		//remove the loading image
-		$(".loadingImage").remove();
+    setLoading(false);
 		
-      if (!results) {
-        return;
-      }
+    if (!results) {
+      return;
+    }
+
+    if(isSpecificDate) {
+      $(".priorShows").remove();
+    }
 	  
 	  results.sort(function(a, b) {
-		return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
+		  return b.Attributes.StartDateTime - a.Attributes.StartDateTime;
 	  });
 
 	  var lastDate;
@@ -204,9 +238,13 @@
 		if (value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title) { 
 		  title = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.Title;
 		  //set the show title in the header sw 5/30/11
-		  if (isSpecificShow) {
-			$("#pageTitle").html(title);
-		  }
+      if (isSpecificShow) {
+        if (isSpecificDate) {
+			    $("#pageTitle").html(title + " on " + startMonth + '/' + startDate + '/' + startYear);
+        } else {
+          $("#pageTitle").html(title);
+        }
+      }
 		}
 		
 		list = $("#shows .showInstanceList");
@@ -300,7 +338,8 @@
 					hostName 
 					//+ "</a>"
 					; 
-		}
+    }
+
 		if (hostURL) {
 		  hostName = hostURL;
 		}
@@ -323,12 +362,12 @@
 		
 		// if(!shortDescription && !longDescription && !player) {
 		// 	return;
-		// }
+    // }
 				
 		list.append(
 			$('<li class="showInstance"></li>').append(
 				'<div class="showTitleContainer"><div class="showTitle">' + 
-					(!title || isSpecificShow ?"": title + ", " ) +
+					(!title || (isSpecificShow && !isSpecificDate) ? "": title + ", " ) +
 					dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
 					(isSpecificShow ? "" : " " + startHour + ":" + startMinutes + " " + amPm) +
 				'</div><div class="clear">.</div></div>' +
@@ -417,10 +456,16 @@
   }
   
   $(function() { 
+
+    if(!isShowValid) {
+      showError("Invalid Show");
+      return;
+    }
+
 	//sw 5/30/11 - if the shows is for all shows, show "Recent Shows" in the header
 	if (!isSpecificShow) {
 		$("#pageTitle").html("Recent Shows");
-    }
+  }
 
 	// Make an AJAX call to get recent shows from the server
 	
@@ -464,24 +509,37 @@
 	// Start seven days before the end date or at the cutoff
 	var numDays = (isSpecificShow ? 30 : 1);
 	var start = new Date(Math.max(end.getTime() - numDays * 24 * 60 * 60 * 1000, cutoff)); 
-	showsStartDate = start;
+  showsStartDate = start;
+
+  if(isSpecificDate) {
+    // According to docs (and results), the JavaScript Date object month 
+    // is 0-indexed, while day and year are as would be expected.  
+    // Therefor we have to substract one from the month.
+    start = new Date(year, month-1, day);
+    end = new Date(year, month-1, day, 23, 59, 59);
+  }
 	
 	populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
 	
-	//sw 6/20/11 - 
-	$(window).scroll(function() {
-		if ($(window).scrollTop() + $(window).height() >= $('.showInstanceList .showInstance:last-child').offset().top) {
-			if (!loadingMoreShows) {
-				loadingMoreShows = true;
-				$(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
-				var end = showsStartDate;
-				var start = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff)); //get 12 horus worth of shows
-				showsStartDate = start;
-				populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
-			}
-		}
-	});
+  //sw 6/20/11 -
+  if(!isSpecificDate) {
+    $(window).scroll(function() {
+      if ($(window).scrollTop() + $(window).height() >= $('.showInstanceList .showInstance:last-child').offset().top) {
+        if (!loadingMoreShows) {
+          loadingMoreShows = true;
+          setLoading(true);
+          //$(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
+          var end = showsStartDate;
+          var start = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff)); //get 12 hours worth of shows
+          showsStartDate = start;
+          populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
+        }
+      }
+    });
+  }
+
   });
+
   var loadingMoreShows = false;
   var showsStartDate;
 
