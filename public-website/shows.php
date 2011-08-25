@@ -363,14 +363,17 @@
 		// if(!shortDescription && !longDescription && !player) {
 		// 	return;
     // }
+    divTitle = (!title || (isSpecificShow && !isSpecificDate) ? "": title + ", " ) +
+				dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
+				(isSpecificShow ? "" : " " + startHour + ":" + startMinutes + " " + amPm)
+    permaURI = '<a href="/' + 
+        value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL + 
+        '/' + startMonth + '/' + startDate + '/' + startYear + '">permalink</a>';
 				
 		list.append(
 			$('<li class="showInstance"></li>').append(
-				'<div class="showTitleContainer"><div class="showTitle">' + 
-					(!title || (isSpecificShow && !isSpecificDate) ? "": title + ", " ) +
-					dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
-					(isSpecificShow ? "" : " " + startHour + ":" + startMinutes + " " + amPm) +
-				'</div><div class="clear">.</div></div>' +
+				'<div class="showTitleContainer"><div class="showTitle">' + divTitle +
+        ' [' + permaURI + ']</div><div class="clear">.</div></div>' +
 				'<div class="spacer">&nbsp;</div>' +
 				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
 				(!shortDescription ? '' : '<div class="showDetail shortDescription">' + shortDescription + '</div>') +
