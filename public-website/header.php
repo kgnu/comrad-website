@@ -63,15 +63,27 @@
 		.showInstance .showDetail {
 			padding-bottom:5px;
 			padding-left:4px;
-		}
+    }
+
+    .showButton {
+      padding-top: 5px;
+			padding-bottom: 5px;
+      padding-left: 4px;
+    }
+
+    .showButtonFloat {
+      float: left;
+    }
+
 		.showDate {
 			font-style:italic;
 		}
 		.longDescription p {
 			margin:0;
 		}
-		.showInstance .playlistContainer {
-			margin-top:10px;
+    .showInstance .playlistContainer {
+      margin-top:5px;
+      clear: left;
 		}
 		.playlist {
 			border:1px solid #444;
@@ -130,8 +142,18 @@
 		}
 		.longDescription p {
 			margin:.5em 0;
-		}
-      </style>
+    }
+
+    a.permalink {
+      text-decoration: none;
+    }
+
+    a.permalink:hover {
+      border-bottom: 1px dashed;
+      color: #007084;
+    }
+
+  </style>
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/jquery/ui/jquery-ui.js"></script>
     <script type='text/javascript' src='js/date/format/date.format.js'></script>
