@@ -29,33 +29,45 @@
 		}
 		.showInstance {
 			border:1px solid #AAAAAA;
-			padding:5px;
-			margin-bottom:30px;
+      padding: 5px 10px 5px 5px;
+      margin-bottom:30px;
+      position: relative;
 		}
 		a img {
 			outline:none;
 			border:none;
-		}
+    }
+
 		.showTitleContainer {
-			height:1px;
-			position:absolute;
-		}
+      width: 100%;
+      height: 25px;
+			position: absolute;
+			top:-14px;
+    }
+
 		.showTitle {
 			padding:2px 4px;
 			float:left;
 			background:#fff;
-			position:relative;
-			top:-19px;
 			/*border:1px solid #AAAAAA;*/
 			color:#009999;
-		}
+    }
+
+    div.permaTitle {
+      padding:2px 4px;
+      margin-right: 10px;
+      float: right;
+			background:#fff;
+    }
+
 		div.clear {
 			clear:both;
 			display:block;
 			height:0;
 			line-height:0; /* enforce height:0 in ie6 */
 			visibility:hidden;
-		}
+    }
+
 		.spacer {
 			line-height:8px;
 			height:8px;
@@ -69,6 +81,30 @@
       padding-top: 5px;
 			padding-bottom: 5px;
       padding-left: 4px;
+    }
+
+    .showButtonTopMenu {
+      padding-top: 5px;
+      padding-left: 4px;
+      padding-bottom: 4px;
+      height: 20px;
+    }
+
+    div.topButton {
+      padding: 3px 3px 1px;
+      border-left: 1px solid #009be3;
+      border-right: 1px solid #009be3;
+      border-top: 1px solid #009be3;
+      background-color: #eeeeee;
+    }
+
+    .topButton a {
+      text-decoration: none;
+    }
+
+    div.topButtonSpacer {
+      float: left;
+      padding: 3px 3px 1px;
     }
 
     .showButtonFloat {
@@ -160,8 +196,9 @@
     <script type="text/javascript" src="js/jquery/json/jquery.json.js"></script>
     <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="js/jquery.jplayer.inspector.js"></script>
+    <script type="text/javascript" src="js/jquery.jplayer.inspector.js"></script> 
 
+    <script type="text/javascript" src="js/show-helpers.js"></script>
  
   <style type="text/css">
 

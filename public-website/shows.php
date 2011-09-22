@@ -20,12 +20,17 @@
 	  //we'll show the name of the show
 	  //otherwise, we'll show "Recent Shows" as the title
 	  //the JavaScript variable isSpecificShow will be used to keep track of this
-    if (isset($show_name) || isset($_GET["id"])) {
+    if(isset($show_name) || isset($_GET["id"])) {
       echo "var isSpecificShow = true;\n";
-      if (strcmp($show_name, 'invalidshow') == 0) {
-        echo "\tvar isShowValid = false;\n";
-      } else {
+      if(isset($show_name)) {
+        if(strcmp($show_name, 'invalidshow') == 0) {
+          echo "\tvar isShowValid = false;\n";
+        } else {
+          echo "\tvar isShowValid = true;\n";
+        }
+      } elseif(isset($_GET["id"])) {
         echo "\tvar isShowValid = true;\n";
+        echo "\tvar showId = " . $_GET['id'] . ";\n";
       }
 	  } else {
 	  	echo "var isSpecificShow = false;\n";
@@ -40,6 +45,9 @@
     } else {
       echo "\tvar isSpecificDate = false;\n";
     }
+
+    #echo "\tvar ajax_host = \"localhost\"";
+    echo "\tvar ajax_host = \"kgnu.net\"";
   ?>
   
   //preload the "Hide" images so that they can display immediately when JavaScript switches
@@ -58,7 +66,7 @@
   function populatePlaylist(showId, divId, aId, type)
   {
 
-		$.get('http://kgnu.net/playlist/ajax/getfullplaylistforshowinstance.php', {
+		$.get('http://' + ajax_host + '/playlist/ajax/getfullplaylistforshowinstance.php', {
 			showid: showId
 		}, function(results) {
 		
@@ -170,7 +178,7 @@
   function populateShows(start, end)
   {
   
-	$.get('http://kgnu.net/playlist/ajax/geteventsbetween.php', {
+	$.get('http://' + ajax_host + '/playlist/ajax/geteventsbetween.php', {
 		start: start,
 		end: end,
 		
@@ -367,40 +375,76 @@
 				dayNames[startDay] + ', ' + startMonth + '/' + startDate + '/' + startYear +
         (isSpecificShow ? "" : " " + startHour + ":" + startMinutes + " " + amPm)
 
-    permaURI = '/' + 
-        value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL + 
-        '/' + startMonth + '/' + startDate + '/' + startYear;
-    permaTitle = '<a class="permalink" href="' + permaURI + '">';
+    permaURI = value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL;
+    // replace URL with permlink if show shortcode is present (i.e., 
+    // anything not starting with http://)  -- CPH
+    
+    if(!permaURI) {
+      permaURI = '/special/' + value.Attributes.Id;
+      permaTitle = '<a class="permalink" href="' + permaURI + '">' + 
+                   divTitle + '</a>';
+    } else if(permaURI.match(/^http:\/\//)) {
+      permaTitle = '<a class="permalink" href="' + permaURI + '">' + 
+                   divTitle + '</a>';
+      permaURI = null;
+    } else {
+      permaURI = '/' + 
+          value.Attributes.ScheduledEvent.Attributes.Event.Attributes.URL + 
+          '/' + startMonth + '/' + startDate + '/' + startYear;
+      permaTitle = '<a class="permalink" href="' + permaURI + '">' + 
+                   divTitle + '</a>';
+    }
 
-    streamAudio = "<a href=\"/recordedstream.m3u?mp3file=" +
+    if(permaURI) {
+      permalink = '<a class="permalink" href="' + permaURI + 
+                  '"><img src="btns/2/permalink_icon.gif">&nbsp;Permalink</a>';
+    }
+
+    streamAudio = '<div class="topButton" style="float: left;">' +
+      "<a href=\"/recordedstream.m3u?mp3file=" +
       'http://www.kgnu.net/audioarchives/' + value.Attributes.RecordedFileName +
-      "\"><img src=\"graphics/streamaudio.gif\"><a>";
-    downloadAudio = "<a href=\"http://www.kgnu.net/audioarchives/" +
-      value.Attributes.RecordedFileName + 
-      "\"><img src=\"graphics/downloadmp3.gif\"><a>";
-    permalink = '<a href="' + permaURI + '"><img src="graphics/permalink.gif"><a>';
-				
+      "\">" + '<img src="btns/2/sound.gif"> Stream MP3' + "</a></div>";
+    downloadAudio = '<div class="topButton" style="float: left;">' +
+      '<a href="http://www.kgnu.net/audioarchives/' +
+      value.Attributes.RecordedFileName + '">' +
+      '<img src="btns/2/save.gif"> Download MP3</a></div>';
+
+
+    // <div style="float: right; width:200px;">.</div>
+
 		list.append(
 			$('<li class="showInstance"></li>').append(
-        '<div class="showTitleContainer"><div class="showTitle">' + permaTitle +
-        divTitle + '</a></div><div class="clear">.</div></div>' +
+        '<div class="showTitleContainer">' +
+          '<div class="showTitle">' + permaTitle + '</div>' + (permaURI ?
+          '<div class="permaTitle">' + permalink + '</div>' : '') +
+        '</div>' +
 				'<div class="spacer">&nbsp;</div>' +
-				(!hostName ? "": '<div class="showDetail">Host: ' + hostName + '</div>') +
+				(!hostName ? "": '<div class="showDetail" style="clear: both;">Host: ' + hostName + '</div>') +
 				(!shortDescription ? '' : '<div class="showDetail shortDescription">' + shortDescription + '</div>') +
-				(!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>')
-			).append(player).append(
-        '<div class="showButton showButtonFloat">' + permalink + '</div>' +
+        (!longDescription ? '' : '<div class="showDetail longDescription">' + longDescription + '</div>') +
+        (value.Attributes.RecordedFileName ?
+        '<div class="showButtonTopMenu">' + streamAudio +
+          '<div class="topButtonSpacer"></div>' + downloadAudio + '</div>'
+          : '')      
+      ).append(player).append(/*
+        (permaURI ? 
+          '<div class="showButton showButtonFloat">' + permalink + '</div>' : ''
+        ) + 
         (value.Attributes.RecordedFileName ? 
         '<div class="showButton showButtonFloat">' + streamAudio + '</div>' +
         '<div class="showButton showButtonFloat">' + downloadAudio +
-        '</div>' : '') +
+        '</div>' : '') + */
         '<div class="showButton playlistContainer">' + playlist + '</div>' +
 				'<div id="' + playlistDivId + '" class="showDetail">' + '</div>'
 			) //sw 6/5/11 changed
 		);
 		
 		// Initialize the player
-		if (eventRecordedAudioURL !== undefined) {
+    if(eventRecordedAudioURL !== undefined) {
+/*      generateJplayer(player, showId, 
+  'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL);
+ */
+
 			var playerContainer = $('<div class="jplayer" />');
 			player.append(playerContainer);
 			player.append($('<div class="jp-audio ' + 'instance_' + showId + '"><div class="jp-type-single"><div id="jp_interface_1" class="jp-interface"><div class="jp-video-play"></div><table style="width: 100%"><tr><td style="width: 110px"><a href="javascript:void(0);" class="jp-play" tabindex="1">play</a><a href="javascript:void(0);" class="jp-pause" style="display: none" tabindex="1">pause</a><a href="javascript:void(0);" class="jp-stop" tabindex="1">stop</a></td><td><div class="jp-progress"><div class="jp-seek-bar"><div class="jp-play-bar"></div></div></div><div class="jp-time"><div class="jp-duration"></div><div class="jp-current-time"></div></div></td><td style="width: 110px"><a href="javascript:void(0);" class="jp-mute" tabindex="1">mute</a><a href="javascript:void(0);" class="jp-unmute" style="display: none" tabindex="1">unmute</a><div class="jp-volume-bar"><div class="jp-volume-bar-value"></div></div></td></tr></table></div></div></div>'));
@@ -421,11 +465,11 @@
 							$(this).jPlayer("setMedia", {
 								mp3: 'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL
 							}).jPlayer('play');
-						}
+            }
 					});
 				});
 			})(showId, eventRecordedAudioURL, playerContainer);
-			
+ 
 			// Add the Download mp3 link
 			// player.append('<div class="download-link"><a href="http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL + '">Link to mp3</a></div>');
 		}
