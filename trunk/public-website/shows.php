@@ -303,7 +303,7 @@
 		  }
 		  playlist = "<span id=\"" + playlistSpanId + "\" title=\"View Playlist\">" +
 				"<a id=\"" + playlistAId + "\" showId=\"" + showId + "\" playListDivId=\"" + playlistDivId + "\" playlistAId=\"" + playlistAId + "\" type=\"" + buttonType + "\" href=\"#\">" +
-					"<img src=\"btns/2/Show" + buttonType + ".gif\" />" +
+					"<img class=\"block-img\" src=\"btns/2/Show" + buttonType + ".gif\" />" +
 				"</a>" +
 			"</span>";
 		  //playlist = $('<span id=\"" + divId + "\" title=\"View Playlist\"><a href=\"javascript:;\">Playlist</a></span>').click(function() {
@@ -517,7 +517,7 @@
     }, 'jsonp');
   }
   
-  $(function() { 
+  function start() { 
 
     if(!isShowValid) {
       showError("Show does not exist.");
@@ -600,11 +600,13 @@
     });
   }
 
-  });
+  };
+
 
   var loadingMoreShows = false;
   var showsStartDate;
 
+  start();
   /* ]]> */
   </script>
 
