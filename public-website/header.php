@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"> 
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  -->
 <html>
 
   <head>
     <meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
     <title>KGNU Independent Community Radio / 88.5 FM & 1390 AM (Boulder / Denver) / 93.7 FM (Nederland)</title>
 
-    <base href="/">
+    <base href="http://www.kgnu.org/">
 
     <meta name="keywords" content="KGNU independent commmunity radio, Boulder, Denver, Free-form, Freeform, Free Form Music, BBC news, Democracy Now, Reggae Bloodlines, Honky Tonk Heroes, Old Grass Gnu Grass, Bluegrass, radio, community radio, Ragtime America">
     <meta name="description" content="KGNU Independent Community Radio broadcasting at 88.5 FM in Boulder and 1390 AM in Denver. Listener supported, volunteer powered community radio.">
@@ -74,7 +75,8 @@
 		}
 		.showInstance .showDetail {
 			padding-bottom:5px;
-			padding-left:4px;
+      padding-left:4px;
+      text-align: left;
     }
 
     .showButton {
@@ -86,7 +88,7 @@
     .showButtonTopMenu {
       padding-top: 5px;
       padding-left: 4px;
-      padding-bottom: 4px;
+      padding-bottom: 1px;
       height: 20px;
     }
 
@@ -189,16 +191,26 @@
       color: #007084;
     }
 
-  </style>
-    <script type="text/javascript" src="js/jquery/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery/ui/jquery-ui.js"></script>
-    <script type='text/javascript' src='js/date/format/date.format.js'></script>
-    <script type="text/javascript" src="js/jquery/json/jquery.json.js"></script>
-    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-    <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="js/jquery.jplayer.inspector.js"></script> 
+    img.block-img {display:block}
 
-    <script type="text/javascript" src="js/show-helpers.js"></script>
+    .jplayer {
+      /* for whatever reason, jplayer shows the 0px by 0px table as a 
+       * black box in strict mode.  This hides that box.  Setting 
+       * display: none stops the flash from loading and playing.
+       */
+      height: 0px;
+    }
+
+  </style>
+    <script type="text/javascript" src="/js/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery/ui/jquery-ui.js"></script>
+    <script type='text/javascript' src='/js/date/format/date.format.js'></script>
+    <script type="text/javascript" src="/js/jquery/json/jquery.json.js"></script>
+    <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.jplayer.inspector.js"></script> 
+
+    <!-- <script type="text/javascript" src="/js/show-helpers.js"></script> -->
  
   <style type="text/css">
 
@@ -351,19 +363,28 @@
 		<tr> 
 			<!--// logo -->
 
-			<td width="1%"><a href="../index.html"><img src="../graphics/logo.gif" alt="" width="275" height="100" border=0></a></td>
+			<td width="1%" valign="top"><a href="../index.html"><img src="../graphics/logo.gif" alt="KGNU Logo" class="block-img"></a></td>
 			<!--// banner -->
 			<td width="99%" valign="top">
-				<table width="100%" border=0 cellspacing=0 cellpadding=0>
+				<table width="100%" height="100%" border=0 cellspacing=0 cellpadding=0>
 					<tr>
-						<td colspan=2><img src="../dot.gif" alt="" border=0 width=1 height=40></td>
+						<td colspan=3><img src="../dot.gif" alt="" border=0 width=1 height=37></td>
 					</tr>
 					<tr>
-						<td width="90%" align="center" nowrap bgcolor="#009a9a"><font size="+2" color="white" face="Arial, sans-serif"><b><i><span id="pageTitle" /></i></b></font></td>
+						<td width="90%" align="center" nowrap bgcolor="#009a9a"><font size="+2" color="white" face="Arial, sans-serif"><b><i><span id="pageTitle"/></i></b></font></td>
 
-						<td nowrap bgcolor="#009a9a" align="center"><a href="https://kgnu.org/ht/quickjoin.html"><img src="../graphics/joinnow.gif" alt="Join now!" title="Click to become a KGNU member!" border=0 width=115 height=23 vspace=1></a><br><a href="mailto:&#108;&#105;&#115;&#116;&#101;&#110;&#101;&#114;&#115;&#45;&#115;&#117;&#98;&#115;&#99;&#114;&#105;&#98;&#101;&#64;&#107;&#103;&#110;&#117;&#46;&#111;&#114;&#103;"><img src="../graphics/emailsignup.gif" alt="E-mail sign-up" title="Click to sign up for the KGNU newsletter" border=0 width=115 height=23 vspace=1></a></td>
-						<td bgcolor="#009a9a"><img src="../dot.gif" alt="" border=0 width=30 height=54></td>
-					</tr>
+            <td nowrap bgcolor="#009a9a" align="center">
+              <table width="100%" height="80%" border=0 cellspacing=0 cellpadding=1>
+                <tr><td>
+                  <a href="https://kgnu.org/ht/quickjoin.html"><img src="../graphics/joinnow.gif" class="block-img" alt="Join now!" title="Click to become a KGNU member!" border=0></a>
+                </td></tr>
+                <tr><td>
+                  <a href="mailto:&#108;&#105;&#115;&#116;&#101;&#110;&#101;&#114;&#115;&#45;&#115;&#117;&#98;&#115;&#99;&#114;&#105;&#98;&#101;&#64;&#107;&#103;&#110;&#117;&#46;&#111;&#114;&#103;"><img src="../graphics/emailsignup.gif" class="block-img" alt="E-mail sign-up" title="Click to sign up for the KGNU newsletter" border=0></a>
+                </td></tr>
+              </table>
+            </td>
+						<td bgcolor="#009a9a"><img src="../dot.gif" alt="" width=30 height=50></td>
+          </tr>
 				</table>
 			</td>
 		</tr>
@@ -602,11 +623,11 @@
                       <table width="100%" border=0 cellspacing=0 cellpadding=0>
 
                         <tr>
-                          <td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                          <td width="100%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                          <td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                          <td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
-                          <td width="0%"><img src="dot.gif" alt="" width=1 height=1 border=0></td>
+                          <td width="0%"><img src="dot.gif" class="block-img" alt="" width=1 height=1 border=0></td>
+                          <td width="100%"><img src="dot.gif" class="block-img" alt="" width=1 height=1 border=0></td>
+                          <td width="0%"><img src="dot.gif" class="block-img" alt="" width=1 height=1 border=0></td>
+                          <td width="0%"><img src="dot.gif" class="block-img" alt="" width=1 height=1 border=0></td>
+                          <td width="0%"><img src="dot.gif" class="block-img" alt="" width=1 height=1 border=0></td>
                         </tr>
 
                         
