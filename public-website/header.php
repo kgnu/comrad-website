@@ -11,6 +11,11 @@
     <meta name="keywords" content="KGNU independent commmunity radio, Boulder, Denver, Free-form, Freeform, Free Form Music, BBC news, Democracy Now, Reggae Bloodlines, Honky Tonk Heroes, Old Grass Gnu Grass, Bluegrass, radio, community radio, Ragtime America">
     <meta name="description" content="KGNU Independent Community Radio broadcasting at 88.5 FM in Boulder and 1390 AM in Denver. Listener supported, volunteer powered community radio.">
     <META name="verify-v1" content="+puZM4YBac9YXeqlsUo0amK5WHLvMOt6bJQdFGP13dM=">
+
+    <?php
+      echo '<meta name="title" content="' . $_GET['name'] . ' on ' . $_GET['day'] . '/' . $_GET['month'] . '/' . $_GET['year'] . "\">\n";
+      echo "<meta name=\"description\" content=\"Another juicey set of music or news from KGNU, serving the front range of Colorado and beyond for over two decades.\">\n";
+    ?>
     <link rel="shortcut icon" href="favicon.ico">
     <!-- <link rel="alternate" href="kgnu.rss" type="application/rss+xml" title="KGNU RSS Feed"> -->
     <link rel="stylesheet" type="text/css" href="css/menustyle.css" media="screen, print">
