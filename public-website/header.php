@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"> 
-<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  -->
 <html>
 
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">  -->
   <head>
     <meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
     <title>KGNU Independent Community Radio / 88.5 FM & 1390 AM (Boulder / Denver) / 93.7 FM (Nederland)</title>
@@ -27,13 +27,15 @@
 			margin:20px 15px 5px;
 			padding:0;
 			list-style-type:none;
-		}
+    }
+
 		.showInstance {
 			border:1px solid #AAAAAA;
       padding: 5px 10px 5px 5px;
       margin-bottom:30px;
       position: relative;
-		}
+    }
+
 		a img {
 			outline:none;
 			border:none;
@@ -72,7 +74,8 @@
 		.spacer {
 			line-height:8px;
 			height:8px;
-		}
+    }
+
 		.showInstance .showDetail {
 			padding-bottom:5px;
       padding-left:4px;
@@ -115,34 +118,43 @@
 
 		.showDate {
 			font-style:italic;
-		}
+    }
+
 		.longDescription p {
 			margin:0;
-		}
+    }
+
     .showInstance .playlistContainer {
       margin-top:5px;
       clear: left;
-		}
+    }
+
 		.playlist {
 			border:1px solid #444;
 			width:100%;
-		}
+    }
+
 		.playlist td {
 			border-bottom: 1px solid #CCC;
-		}
+    }
+
 		.playlist .head {
 			font-weight:bold;
 			background-color:#B7BBC4;
-		}
+    }
+
 		.playlist .alternatingRow {
 			background-color:#eeeeee;
-		}
+    }
+
 		.loading {
 			color:#999;
-		}
+    }
+
 		.loadingImage {
 			text-align:center;
-		}	
+    }	
+
 		.priorShows {
 			margin-top:1em;
 			font-size:14pt;
@@ -170,14 +182,17 @@
 		/* css for short and long descriptions */
 		.shortDescription {
 			font-size:15px;
-		}
+    }
+
 		.longDescription {
 			font-family:'Calibri',sans-serif !important;
 			font-size:12px;
-		}
+    }
+
 		.longDescription p:first-child { /* won't work in early versions of IE, so this style is just a nice-to-have */
 			margin-top:0;
-		}
+    }
+
 		.longDescription p {
 			margin:.5em 0;
     }
@@ -191,7 +206,14 @@
       color: #007084;
     }
 
-    img.block-img {display:block}
+    img.block-img {
+      display:block
+    }
+
+    img.menu-img {
+      display: block;
+      margin-bottom: 2px;
+    }
 
     .jplayer {
       /* for whatever reason, jplayer shows the 0px by 0px table as a 
@@ -350,12 +372,12 @@
   <!-- don't leave any space characters between <A> and </A>, or Netscape and Opera will add an underlined blank charater -->
   <!-- TDs with an image must be written all in one line, else Netscape and IE add 5 pixels below a cell -->
 
-  	<body style="background-color:#F8F8E0"> <!-- sw 5/30/11 -->
+  	<body style="background-color:#F8F8E0; margin: 7px 8px 8px 8px;"> <!-- sw 5/30/11 -->
 
 
     <div id="jquery_jplayer"></div>
     <!-- // ACCESSIBILITY -->
-    <a href="index.html#content" ><img src="dot.gif" alt="skip to content" border=0 width=1 height=1></a>
+    <a href="index.html#content" ><img src="dot.gif" class="block-img" alt="skip to content" border=0 width=1 height=1></a>
 	
 	<!-- sw 5/30/11 -->
 	<!-- // TOP LOGO AND BANNER -->
@@ -368,7 +390,7 @@
 			<td width="99%" valign="top">
 				<table width="100%" height="100%" border=0 cellspacing=0 cellpadding=0>
 					<tr>
-						<td colspan=3><img src="../dot.gif" alt="" border=0 width=1 height=37></td>
+						<td colspan=3><img src="../dot.gif" class="block-img" alt="" border=0 width=1 height=40></td>
 					</tr>
 					<tr>
 						<td width="90%" align="center" nowrap bgcolor="#009a9a"><font size="+2" color="white" face="Arial, sans-serif"><b><i><span id="pageTitle"/></i></b></font></td>
@@ -383,7 +405,7 @@
                 </td></tr>
               </table>
             </td>
-						<td bgcolor="#009a9a"><img src="../dot.gif" alt="" width=30 height=50></td>
+						<td bgcolor="#009a9a"><img src="../dot.gif" class="block-img" alt="" width=30 height=54></td>
           </tr>
 				</table>
 			</td>
@@ -398,17 +420,19 @@
           <table border=0 cellpadding=0 cellspacing=0>
             <tr>
               <td height="190">
-                <a href="/"><img src="../btns/btn1.gif" alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br><br>
-                <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="../btns/btn2.gif" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a><br>
-                <a onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a><br>
-                <a href="/ht/support.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="../btns/btn4.gif" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a><br>
-                <a href="/ht/volunteer.html" onMouseOver="GoIn(5);" onMouseOut="GoOut(5);"><img src="../btns/btn5.gif" alt="buy our stuff" border=0 width=175 height=22 name="btn5" vspace=1></a><br>
-                <a href="/ht/buy.html" onMouseOver="GoIn(6);" onMouseOut="GoOut(6);"><img src="../btns/btn6.gif" alt="submit stuff" border=0 width=175 height=22 name="btn6" vspace=1></a><br>
-                <a href="/ht/submit.html" onMouseOver="GoIn(7);" onMouseOut="GoOut(7);"><img src="../btns/btn7.gif" alt="contact us" border=0 width=175 height=22 name="btn7" vspace=1></a><br>
-                <a href="/ht/contact.html" onMouseOver="GoIn(8);" onMouseOut="GoOut(8);"><img src="../btns/btn8.gif" alt="our shows" border=0 width=175 height=22 name="btn8" vspace=1></a><br>
-                <a href="/ht/services.html" onMouseOver="GoIn(9);" onMouseOut="GoOut(9);"><img src="../btns/btn9.gif" alt="our services" border=0 width=175 height=22 name="btn9" vspace=1></a><br>
-                <a href="/ht/aboutus.html" onMouseOver="GoIn(10);" onMouseOut="GoOut(10);"><img src="../btns/btn10.gif" alt="about us" border=0 width=175 height=22 name="btn10" vspace=1></a><br>
-                <a href="/ht/calendarsonline.html" onMouseOver="GoIn(11);" onMouseOut="GoOut(11);"><img src="../btns/btn11.gif" alt="calendars" border=0 width="175" height="22" name="btn11" vspace=1></a><br><br><img src="http://www.kgnu.org/dot.gif" alt="" width=6 height=1 border=0 align="none">
+                <a href="/"><img src="../btns/btn1.gif" class="block-img"  alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br/>
+                <a href="/schedule.html" onMouseOver="GoIn(0);" onMouseOut="GoOut(0);"><img src="./btns/btn0.gif" class="menu-img" alt="program schedule" border=0 width=175 height=22 name="btn0" vspace=1></a>
+                <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="../btns/btn2.gif" class="menu-img" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a>
+                <a onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" class="menu-img" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a>
+                <a href="/ht/support.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="../btns/btn4.gif" class="menu-img" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a>
+                <a href="/ht/volunteer.html" onMouseOver="GoIn(5);" onMouseOut="GoOut(5);"><img src="../btns/btn5.gif" class="menu-img" alt="buy our stuff" border=0 width=175 height=22 name="btn5" vspace=1></a>
+                <a href="/ht/buy.html" onMouseOver="GoIn(6);" onMouseOut="GoOut(6);"><img src="../btns/btn6.gif" class="menu-img" alt="submit stuff" border=0 width=175 height=22 name="btn6" vspace=1></a>
+                <a href="/ht/submit.html" onMouseOver="GoIn(7);" onMouseOut="GoOut(7);"><img src="../btns/btn7.gif" class="menu-img" alt="contact us" border=0 width=175 height=22 name="btn7" vspace=1></a>
+                <a href="/ht/contact.html" onMouseOver="GoIn(8);" onMouseOut="GoOut(8);"><img src="../btns/btn8.gif" class="menu-img" alt="our shows" border=0 width=175 height=22 name="btn8" vspace=1></a>
+                <a href="/ht/services.html" onMouseOver="GoIn(9);" onMouseOut="GoOut(9);"><img src="../btns/btn9.gif" class="menu-img" alt="our services" border=0 width=175 height=22 name="btn9" vspace=1></a>
+                <a href="/ht/aboutus.html" onMouseOver="GoIn(10);" onMouseOut="GoOut(10);"><img src="../btns/btn10.gif" class="menu-img" alt="about us" border=0 width=175 height=22 name="btn10" vspace=1></a>
+                <a href="/ht/calendarsonline.html" onMouseOver="GoIn(11);" onMouseOut="GoOut(11);"><img src="../btns/btn11.gif" class="menu-img" alt="calendars" border=0 width="175" height="22" name="btn11" vspace=1></a>
+                <br/><img src="http://www.kgnu.org/dot.gif" alt="" width=6 height=1 border=0 align="none">
                 <a href="http://www.twitter.com/KGNU" target="_blank"><img src="../graphics/twitter.png" alt="Follow us on Twitter" width="32" height="32" border="0"></a><img src="http://www.kgnu.org/dot.gif" alt="" width=4 height=1 border=0 align="none"><a href="http://www.facebook.com/kgnu.colorado" target="_blank"><img src="../graphics/facebook.png" alt="Facebook" width="32" height="32" border=0></a>
               </td>
             </tr>
