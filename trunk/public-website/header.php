@@ -14,7 +14,7 @@
 
     <?php
       echo '<meta name="title" content="' . $_GET['name'] . ' on ' . $_GET['day'] . '/' . $_GET['month'] . '/' . $_GET['year'] . "\">\n";
-      echo "<meta name=\"description\" content=\"Another juicey set of music or news from KGNU, serving the front range of Colorado and beyond for over two decades.\">\n";
+      echo "<meta name=\"description\" content=\"Another juicy set of music or news from KGNU, serving the front range of Colorado and beyond for over three decades.\">\n";
     ?>
     <link rel="shortcut icon" href="favicon.ico">
     <!-- <link rel="alternate" href="kgnu.rss" type="application/rss+xml" title="KGNU RSS Feed"> -->
@@ -428,7 +428,7 @@
                 <a href="/"><img src="../btns/btn1.gif" class="block-img"  alt="home" border=0 width=175 height=22 name="btn1" vspace=1></a><br/>
                 <a href="/schedule.html" onMouseOver="GoIn(0);" onMouseOut="GoOut(0);"><img src="./btns/btn0.gif" class="menu-img" alt="program schedule" border=0 width=175 height=22 name="btn0" vspace=1></a>
                 <a href="/ht/listencomp.html" onMouseOver="GoIn(2);" onMouseOut="GoOut(2);"><img src="../btns/btn2.gif" class="menu-img" alt="listen online" border=0 width=175 height=22 name="btn2" vspace=1></a>
-                <a onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" class="menu-img" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a>
+                <a href="shows.php" onMouseOver="GoIn(3);" onMouseOut="GoOut(3);"><img src="../btns/btn3.gif" class="menu-img" alt="archives/playlist" border=0 width=175 height=22 name="btn3" vspace=1></a>
                 <a href="/ht/support.html" onMouseOver="GoIn(4);" onMouseOut="GoOut(4);"><img src="../btns/btn4.gif" class="menu-img" alt="volunteer" border=0 width=175 height=22 name="btn4" vspace=1></a>
                 <a href="/ht/volunteer.html" onMouseOver="GoIn(5);" onMouseOut="GoOut(5);"><img src="../btns/btn5.gif" class="menu-img" alt="buy our stuff" border=0 width=175 height=22 name="btn5" vspace=1></a>
                 <a href="/ht/buy.html" onMouseOver="GoIn(6);" onMouseOut="GoOut(6);"><img src="../btns/btn6.gif" class="menu-img" alt="submit stuff" border=0 width=175 height=22 name="btn6" vspace=1></a>
