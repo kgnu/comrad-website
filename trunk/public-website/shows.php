@@ -405,7 +405,7 @@
       'http://www.kgnu.net/audioarchives/' + value.Attributes.RecordedFileName +
       "\">" + '<img src="btns/2/sound.gif"> Stream MP3' + "</a></div>";
     downloadAudio = '<div class="topButton" style="float: left;">' +
-      '<a href="http://www.kgnu.net/audioarchives/' +
+      '<a href="http://www.kgnu.net/forcedownload.php?mp3file=audioarchives/' +
       value.Attributes.RecordedFileName + '">' +
       '<img src="btns/2/save.gif"> Download MP3</a></div>';
 
