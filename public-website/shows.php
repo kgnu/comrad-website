@@ -402,7 +402,7 @@
 
     streamAudio = '<div class="topButton" style="float: left;">' +
       "<a href=\"/recordedstream.m3u?mp3file=" +
-      'http://www.kgnu.net/audioarchives/' + value.Attributes.RecordedFileName +
+      'http://www.kgnu.org/audioarchives/' + value.Attributes.RecordedFileName +
       "\">" + '<img src="btns/2/sound.gif"> Stream MP3' + "</a></div>";
     downloadAudio = '<div class="topButton" style="float: left;">' +
       '<a href="http://www.kgnu.net/forcedownload.php?mp3file=audioarchives/' +
@@ -463,7 +463,7 @@
 						ready: function () {
 							// Set the mp3 url and start playing
 							$(this).jPlayer("setMedia", {
-								mp3: 'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL
+								mp3: 'http://www.kgnu.org/audioarchives/' + eventRecordedAudioURL
 							}).jPlayer('play');
             }
 					});
@@ -471,7 +471,7 @@
 			})(showId, eventRecordedAudioURL, playerContainer);
  
 			// Add the Download mp3 link
-			// player.append('<div class="download-link"><a href="http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL + '">Link to mp3</a></div>');
+			// player.append('<div class="download-link"><a href="http://www.kgnu.org/audioarchives/' + eventRecordedAudioURL + '">Link to mp3</a></div>');
 		}
 		
 
