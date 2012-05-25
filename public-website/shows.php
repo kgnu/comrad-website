@@ -148,8 +148,8 @@
 	  $('#' + divId + " .loading").remove();
 	  $('#'+ divId).append(playlistTable);
 	  
-	  //setup the playlist to automatically refresh every five minutes
-		setTimeout('populatePlaylist("' + showId + '","' + divId + '","' + aId + '","' + type + '")',1000 * 60 * 5);
+	  //setup the playlist to automatically refresh every three minutes
+		setTimeout('populatePlaylist("' + showId + '","' + divId + '","' + aId + '","' + type + '")',1000 * 60 * 3);
     }, 'jsonp');
 
     //setNewClickAction(divId, aId);
