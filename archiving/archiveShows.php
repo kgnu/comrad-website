@@ -17,7 +17,7 @@
 	//this error handler will write out any PHP errors
 	set_error_handler('errorHandler');
 	function errorHandler($errno, $errstr, $errfile, $errline) {
-		logText('PHP Error: ' . $errstr . ' (line '.$errline.' in '.$errfile.')');
+		logText('PHP Error from archiveShows.php: ' . $errstr . ' (line '.$errline.' in '.$errfile.')');
 	}
 	
 	logText('Starting executing archiveShows.php');
@@ -43,6 +43,7 @@
 			$event["host"] = $v[5];
 			$event["eventId"] = $v[6];
 			$event["hostId"] = $v[7];
+			$event["category"] = $v[8];
 			if (time() >= (int)$event["recordingStartTime"] && time() <= (int)$event["endTime"]) { //the event is active if the current time is after the start time, but before the end time
 				$activeEvent = true;
 				break;
@@ -67,6 +68,15 @@
 		//has stopped for some reason
 		logText('stream is already being recorded at '.$temporaryDestination.$folder.'/stream.mp3...exiting script.');
 		exit();
+	}
+	//sw 2/14/12 - determine which stream to rip from depending on whether the show is music or news/pa:
+	switch ($event["category"]) {
+		case "Music":
+			$stream = $musicStream;
+			break;
+		case "NewsPA":
+			$stream = $newsStream;
+			break;
 	}
 	$command = "streamripper ".$stream; //setup the terminal command
 	$command .= " -d ".$temporaryDestination.$folder; //set the destination directory
@@ -158,7 +168,7 @@
 		$command .= ' -t "'.$event["titleWithSpaces"].'"'; //title - we'll use the show title
 		$command .= ' -Y '.date("Y", $event["recordingStartTime"]); //year
 		$command .= ' -p KGNU'; //publisher
-		$command .= ' '.$recordedFileName;
+		$command .= ' ' . $destination . $recordedFileName;
 		logText('writing ID3 tags with commad: '.$command);
 		exec($command, $output, $returnStatus);
 		if ($returnStatus == "0") {
@@ -168,9 +178,9 @@
 		}
 		
 		//write RSS feed for podcasting
-		require('createPodcasts.php');
-		writeRssFeedForHost($event["hostId"]);
-		writeRssFeedForShow($event["showId"]);
+		//require('createPodcasts.php');
+		//writeRssFeedForHost($event["hostId"]);
+		//writeRssFeedForShow($event["showId"]);
 		
 	} else {
 		//unsuccessful execution
