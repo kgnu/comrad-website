@@ -15,7 +15,7 @@
 	//this error handler will write out any PHP errors
 	set_error_handler('errorHandler');
 	function errorHandler($errno, $errstr, $errfile, $errline) {
-		logText('PHP Error: ' . $errstr . ' (line '.$errline.' in '.$errfile.')');
+		logText('PHP Error from getUpcomingEvents.php: ' . $errstr . ' (line '.$errline.' in '.$errfile.')');
 	}
 	
 	logText('Started executing getUpcomingEvents.php');
@@ -44,8 +44,9 @@
 			$startTime = $scheduledEventInstance->StartDateTime;
 			$recordingStartTime = $startTime + ($scheduledEventInstance->ScheduledEvent->RecordingOffset * 60);
 			$endTime = $startTime + ($scheduledEventInstance->Duration * 60);
+			$showType = $scheduledEventInstance->ScheduledEvent->Event->Category;
 			$upcomingEvents .= $title . "|" . $recordingStartTime  . "|" . $endTime .  "|" . $startTime . "|" . $event->Title . "|" . 
-							 $event->Host . "|" . $event->EventId . "|" . $event->HostId . "\n";
+							 $event->Host . "|" . $event->EventId . "|" . $event->HostId . "|".$showType."\n";
 		}
 	}
 	

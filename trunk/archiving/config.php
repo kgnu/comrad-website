@@ -15,7 +15,9 @@
 	$upcomingEventsFile = "/srv2/www/kgnu/audioarchives/upcomingEvents.txt"; 
 	
 	//the stream URL to record - do not include the http:// part of the URL, as this causes a hostname can't be resolved error
-	$stream = 'stream.kgnu.net:8000/KGNU_live_high.mp3.m3u'; 
+	$musicStream = '206.168.198.100:8001/KGNU_live_high.mp3.m3u'; //206.168.198.100:8001 buster.kgnu.net
+	$newsStream = '206.168.198.100:8001/KGNU_live_med.mp3.m3u';
+	$stream = '206.168.198.100:8001/KGNU_live_high.mp3.m3u'; 
 	
 	//the destination where the MP3 file of the stream will be stored
 	//the folder structure looks like:
