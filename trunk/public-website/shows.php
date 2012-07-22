@@ -592,7 +592,17 @@
           setLoading(true);
           //$(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
           var end = showsStartDate;
-          var start = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff)); //get 12 hours worth of shows
+          var start;  
+          if (isSpecificShow)
+          {
+            //If it's a specific show, get one week's worth of shows.
+          start new Date(Math.max(end.getTime() - 180 * 60 * 60 * 1000, cutoff));
+          }
+          else
+          {
+            //If it's not a specific show (Recent Shows view), get 12 hours more.
+          start = = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff));
+          }
           showsStartDate = start;
           populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
         }
