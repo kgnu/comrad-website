@@ -595,8 +595,10 @@
           var start;  
           if (isSpecificShow)
           {
-            //If it's a specific show, get one week's worth of shows.
-          start new Date(Math.max(end.getTime() - 180 * 60 * 60 * 1000, cutoff));
+            //If it's a specific show, get at least one more show. Depends on the frequency of the show.
+            //It would be better if geteventsbetween had an additional parameter that could specify
+            //the number of shows to return prior to a given date.
+          start new Date(Math.max(end.getTime() - 540 * 60 * 60 * 1000, cutoff));
           }
           else
           {
