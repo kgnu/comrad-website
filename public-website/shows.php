@@ -405,7 +405,7 @@
       'http://www.kgnu.org/audioarchives/' + value.Attributes.RecordedFileName +
       "\" target=\"_blank\">" + '<img src="btns/2/sound.gif"> Stream MP3' + "</a></div>";
     downloadAudio = '<div class="topButton" style="float: left;">' +
-      '<a href="http://www.kgnu.net/forcedownload.php?mp3file=audioarchives/' +
+      '<a href="http://www.kgnu.org/forcedownload.php?mp3file=audioarchives/' +
       value.Attributes.RecordedFileName + '">' +
       '<img src="btns/2/save.gif"> Download MP3</a></div>';
 
@@ -441,8 +441,9 @@
 		
 		// Initialize the player
     if(eventRecordedAudioURL !== undefined) {
-/*      generateJplayer(player, showId, 
-  'http://www.kgnu.net/audioarchives/' + eventRecordedAudioURL);
+/*
+      generateJplayer(player, showId, 
+  'http://www.kgnu.org/audioarchives/' + eventRecordedAudioURL);
  */
 
 			var playerContainer = $('<div class="jplayer" />');
@@ -592,18 +593,16 @@
           setLoading(true);
           //$(".showInstanceList").after('<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>');
           var end = showsStartDate;
-          var start;  
+          var start;
           if (isSpecificShow)
           {
-            //If it's a specific show, get at least one more show. Depends on the frequency of the show.
-            //It would be better if geteventsbetween had an additional parameter that could specify
-            //the number of shows to return prior to a given date.
-          start new Date(Math.max(end.getTime() - 540 * 60 * 60 * 1000, cutoff));
+            //If it's a specific show, get one week's worth of shows.
+          start = new Date(Math.max(end.getTime() - 540 * 60 * 60 * 1000, cutoff));
           }
           else
           {
             //If it's not a specific show (Recent Shows view), get 12 hours more.
-          start = = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff));
+          start = new Date(Math.max(end.getTime() - 12 * 60 * 60 * 1000, cutoff));
           }
           showsStartDate = start;
           populateShows(start.format("yyyy-mm-dd HH:MM:ss"), end.format("yyyy-mm-dd HH:MM:ss"));
@@ -626,6 +625,12 @@
 	<div class="nav earlier" style="display: none">
 		<a>View earlier shows</a>
 	</div>
+     <?php if ($_GET['name'] == 'bluegrass'): ?>
+<div class="headerText">
+For Buck's Bluegrass Hotline, KGNU's calendar of bluegrass concerts in Colorado, go <a href="http://kgnu.org/bluegrasscalendar">here</a>.<br><br>
+Archives of RockyGrass 2012 can be found <a href="http://kgnu.org/rockygrass">here</a>.<br><br>
+</div>
+<?php endif; ?>
 	<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>
 	<ul class="showInstanceList">
 	</ul>
