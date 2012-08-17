@@ -10,7 +10,7 @@
 	
 	//include the configuration and log file
 	require('config.php');
-	require('log.php');
+	require('log.php'); 
 	
 	//this error handler will write out any PHP errors
 	set_error_handler('errorHandler');
@@ -20,33 +20,29 @@
 	
 	logText('Started executing getUpcomingEvents.php');
 	
-	//initialize classes that will let us access the database
-	require_once($root.'lib/classes/Initialize.php');
-	$init = new Initialize();
-	$init->setAutoload();
-	
-	//disable authorization
-	$pm = PermissionManager::getInstance();
-	$pm->disableAuthorization();
-	
-	//get all events in the next day
-	$em = EventManager::getInstance();
-	$events = $em->getEventsBetween(time(), time() + 60*60*24);
+	//sw changed file on 8/16/12 to pull from geteventsbetween.php API instead of data access layer
+	$apiUrl = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . time() . '&end=' . (time() + 60*60*24);
+	logText('accesing url at ' . $apiUrl);
+	$contents = file_get_contents($apiUrl);
+	$events = json_decode($contents, TRUE);		
 	
 	//loop through the next day's events, and prepare a string to store in a text file
 	$upcomingEvents = "";
 	foreach ($events as $scheduledEventInstance) {
-		$scheduledEvent = $scheduledEventInstance->ScheduledEvent;
-		$event = $scheduledEvent->Event;
+		$scheduledEvent = $scheduledEventInstance['Attributes']['ScheduledEvent'];
+		$event = $scheduledEvent['Attributes']['Event']['Attributes'];
 		//if we're supposed to record the event, store the event in the text file
-		if ($event->RecordAudio) {
-			$title = preg_replace("/[^A-Za-z0-9]/","",$event->Title); //strip all non-alphanumeric characters out of the title, since this will be used for a file/folder name
-			$startTime = $scheduledEventInstance->StartDateTime;
-			$recordingStartTime = $startTime + ($scheduledEventInstance->ScheduledEvent->RecordingOffset * 60);
-			$endTime = $startTime + ($scheduledEventInstance->Duration * 60);
-			$showType = $scheduledEventInstance->ScheduledEvent->Event->Category;
-			$upcomingEvents .= $title . "|" . $recordingStartTime  . "|" . $endTime .  "|" . $startTime . "|" . $event->Title . "|" . 
-							 $event->Host . "|" . $event->EventId . "|" . $event->HostId . "|".$showType."\n";
+		if (isset($event['RecordAudio']) && $event['RecordAudio']) {
+			$title = preg_replace("/[^A-Za-z0-9]/","",$event['Title']); //strip all non-alphanumeric characters out of the title, since this will be used for a file/folder name
+			$startTime = $scheduledEventInstance['Attributes']['StartDateTime'];
+			$recordingStartTime = $startTime + ($scheduledEvent['Attributes']['RecordingOffset'] * 60);
+			$endTime = $startTime + ($scheduledEventInstance['Attributes']['Duration'] * 60);
+			$showType = $event['Category'];
+			$upcomingEvents .= $title . "|" . $recordingStartTime  . "|" . $endTime .  "|" . $startTime . "|" . $event['Title'] . "|" . 
+							 (isset($event['Host']) ? $event['Host']['Attributes']['Name'] : '') 
+							 . "|" . $event['Id'] . "|" . 
+							 (isset($event['HostId']) ? $event['HostId'] : '') . 
+							 "|".$showType."\n";
 		}
 	}
 	
