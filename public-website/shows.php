@@ -47,7 +47,7 @@
     }
 
     #echo "\tvar ajax_host = \"localhost\"";
-    echo "\tvar ajax_host = \"kgnu.net\"";
+    echo "\tvar ajax_host = \"kgnu.org\"";
   ?>
   
   //preload the "Hide" images so that they can display immediately when JavaScript switches
