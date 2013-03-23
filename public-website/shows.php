@@ -121,7 +121,7 @@
 						break;
 					
 					case 'DJComment':
-						playlistTable.append('<tr><td colspan="3" class="comment">Comment:</td></tr>');
+                //playlistTable.append('<tr><td colspan="3" class="comment">Comment:</td></tr>');
 						playlistTable.append('<tr><td colspan="3" class="comment-body">' + value.Attributes.Body + '</td></tr>')
 						break;
 					
@@ -629,6 +629,11 @@
 <div class="headerText">
 For Buck's Bluegrass Hotline, KGNU's calendar of bluegrass concerts in Colorado, go <a href="http://kgnu.org/bluegrasscalendar">here</a>.<br><br>
 Archives of RockyGrass 2012 can be found <a href="http://kgnu.org/rockygrass">here</a>.<br><br>
+</div>
+<?php endif; ?>
+     <?php if ($_GET['name'] == 'chinese'): ?>
+<div class="headerText">
+Please visit Colorado Chinese Radio's website <a href="http://cacenetwork.wordpress.com/chinese-radio/">here</a>.<br><br>
 </div>
 <?php endif; ?>
 	<div class="loadingImage"><img src="/graphics/ajax-loader.gif" alt="Loading" /></div>
