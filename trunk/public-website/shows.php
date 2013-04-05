@@ -209,9 +209,9 @@
 	  
 		//skip the first show if we're lazy loading more shows, since that show will already
 		//be displayed
-		if (loadingMoreShows && index == 0) {
-			return;
-		}
+       //if (loadingMoreShows && index == 0) {
+       //return;
+       //}
 
 		var longTime = value.Attributes.StartDateTime;
 		var startTime = new Date(value.Attributes.StartDateTime * 1000);
