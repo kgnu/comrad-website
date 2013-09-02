@@ -597,7 +597,7 @@
           if (isSpecificShow)
           {
             //If it's a specific show, get one week's worth of shows.
-          start = new Date(Math.max(end.getTime() - 540 * 60 * 60 * 1000, cutoff));
+          start = new Date(Math.max(end.getTime() - 1080 * 60 * 60 * 1000, cutoff));
           }
           else
           {
