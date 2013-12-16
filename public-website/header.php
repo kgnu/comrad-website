@@ -13,7 +13,7 @@
     <META name="verify-v1" content="+puZM4YBac9YXeqlsUo0amK5WHLvMOt6bJQdFGP13dM=">
 
     <?php
-      echo '<meta name="title" content="' . $_GET['name'] . ' on ' . $_GET['day'] . '/' . $_GET['month'] . '/' . $_GET['year'] . "\">\n";
+      echo '<meta name="title" content="' . $_GET['name'] . ' on ' . $_GET['month'] . '/' . $_GET['day'] . '/' . $_GET['year'] . "\">\n";
       echo "<meta name=\"description\" content=\"Another juicy set of music or news from KGNU, serving the front range of Colorado and beyond for over three decades.\">\n";
     ?>
     <link rel="shortcut icon" href="favicon.ico">
