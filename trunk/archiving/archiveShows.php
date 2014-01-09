@@ -106,7 +106,7 @@
 			mkdir($destination.$event["title"]."/".date("Y", $event["recordingStartTime"]));
 		}
 		//move the file to its permanent location
-		$recordedFileName = $destination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
+		$recordedFileName = $destination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d", $event["recordingStartTime"]).".mp3";
 		rename($temporaryDestination.$folder."/stream.mp3", $recordedFileName);
 		
 		//delete the temporary file
@@ -115,50 +115,69 @@
 		//update the database with the recording path
 		logText('file moved to permanent location - updating the database with the file path');
 		
-		//initialize classes that will let us access the database
-		require_once($root.'lib/classes/Initialize.php');
-		$init = new Initialize();
-		$init->setAutoload();
+		// //initialize classes that will let us access the database
+		// require_once($root.'lib/classes/Initialize.php');
+		// $init = new Initialize();
+		// $init->setAutoload();
 		
-		//disable authorization
-		$pm = PermissionManager::getInstance();
-		$pm->disableAuthorization();
+		// //disable authorization
+		// $pm = PermissionManager::getInstance();
+		// $pm->disableAuthorization();
 		
-		//get all events in the next day
-		$em = EventManager::getInstance();
-		$eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"], "Show");
+		// //get all events in the next day
+		// $em = EventManager::getInstance();
+		// $eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"], "Show");
+		//sw added 8/16/12
+		$url = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . $event['startTime'] . '&end=' . $event['endTime'] . '&types=' . urlencode('["Show"]');
+		$contents = file_get_contents($url);
+		$eventInstance = json_decode($contents, TRUE);
+		logText('geteventsbetween: '.$url.': '.print_r($contents, TRUE));
 		
 		foreach ($eventInstance as $ei) {
 			// Whatever the file name is
 			$recordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
 			logText('updating database with file path: checking instance');
 			// Create a new ScheduledShowInstance if $ei is a ScheduledEventInstance
-			if (!$ei instanceof ScheduledShowInstance) {
-				$ei = new ScheduledShowInstance(array(
-					'ScheduledEventId' => $ei->ScheduledEventId,
-					'StartDateTime' => $ei->StartDateTime,
-					'Duration' => $ei->Duration
-				));
-			}
-
-			// $ei now points to a ScheduledShowInstance
-			logText('updating database with file path: $ei now points to a ScheduledShowInstance');
-
-			// Save it to the database.  This will insert if it's new, save if it already exists
-			if ($ei->hasColumn('RecordedFileName')) {
-				logText('updating database with file path: the instance has the RecordedFileName column');
-				$ei->RecordedFileName = $recordedFileName;
-				logText('updating database with file path: file path has been set');
-				if ($ei->isNew()) {
-					DB::getInstance('MySql')->insert($ei);
-				} else {
-					DB::getInstance('MySql')->update($ei);
-				}
-				logText('updating database with file path: everything looks good');
+			logText('$ei contains: ' . print_r($ei, TRUE));
+			if ($ei['Type'] === 'ScheduledShowInstance' && isset($ei['Attributes']['Id'])) {
+				// Save the existing ScheduledShowInstance
+				$ei = array(
+					'Type' => 'ScheduledShowInstance',
+					'Attributes' => array(
+						'Id' => $ei['Attributes']['Id'],
+						'RecordedFileName' => $recordedFileName
+					)
+				);
 			} else {
-				logText("Error: The event instance did not have the RecordedFileName column");
+				// $ei['Type'] is assumed to be ScheduledEventInstance. Create a new ScheduledShowInstance
+				$ei = array(
+					'Type' => 'ScheduledShowInstance',
+					'Attributes' => array(
+						'ScheduledEventId' => $ei['Attributes']['ScheduledEventId'],
+						'StartDateTime' => $ei['Attributes']['StartDateTime'],
+						'Duration' => $ei['Attributes']['Duration'],
+						'RecordedFileName' => $recordedFileName
+					)
+				);
 			}
-		}		
+			
+			$url = 'http://kgnu.org/playlist/ajax/ajaxdbinterface.php';
+			$data = 'method=save&db=MySql&token=I46lPCCtbIRViymEWgZx&params='.json_encode($ei);
+			
+			logText('Preparing CURL request to update file name to ' . $url);
+			logText('Data for CURL request: ' . $data);
+			
+			$ch = curl_init( $url );
+			curl_setopt( $ch, CURLOPT_POST, 1);
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt( $ch, CURLOPT_HEADER, 0);
+			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+			
+			$response = curl_exec( $ch );
+			
+			logText('CURL response: '.$response);
+		}
 		
 		//write ID3 tags using EYED3
 		//http://eyed3.nicfit.net/
