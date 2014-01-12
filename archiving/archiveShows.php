@@ -135,7 +135,7 @@
 		
 		foreach ($eventInstance as $ei) {
 			// Whatever the file name is
-			$recordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d").".mp3";
+			$recordedFileName = $httpDestination.$event["title"]."/".date("Y", $event["recordingStartTime"])."/".$event["title"]."_".date("Y-m-d", $event["recordingStartTime"]).".mp3";
 			logText('updating database with file path: checking instance');
 			// Create a new ScheduledShowInstance if $ei is a ScheduledEventInstance
 			logText('$ei contains: ' . print_r($ei, TRUE));
