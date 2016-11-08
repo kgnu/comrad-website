@@ -162,7 +162,7 @@
 			}
 			
 			$url = 'http://kgnu.org/playlist/ajax/ajaxdbinterface.php';
-			$data = 'method=save&db=MySql&token=I46lPCCtbIRViymEWgZx&params='.json_encode($ei);
+			$data = 'method=save&db=MySql&token=' . $archiveToken . '&params='.json_encode($ei);
 			
 			logText('Preparing CURL request to update file name to ' . $url);
 			logText('Data for CURL request: ' . $data);
