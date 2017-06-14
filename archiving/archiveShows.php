@@ -94,6 +94,14 @@
 	
 	if ($returnStatus == "0") {
 		logText('streamripper successful - moving file to permanent location');
+		//logText('streamripper successful, output:');
+		//foreach ($output as $o) {
+		//	logText('--- ' . $o);
+		//}
+		//logText('moving file to permanent location');
+
+
+
 		//successful execution
 		//move the file to its permanent location
 		//create any folders that are not created yet

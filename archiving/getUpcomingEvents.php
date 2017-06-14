@@ -21,13 +21,21 @@
 	logText('Started executing getUpcomingEvents.php');
 	
 	//sw changed file on 8/16/12 to pull from geteventsbetween.php API instead of data access layer
-	$apiUrl = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . time() . '&end=' . (time() + 60*60*24);
+	$apiUrl = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . time() . '&end=' . (time() + 60*60*24*3); 
 	logText('accesing url at ' . $apiUrl);
 	$contents = file_get_contents($apiUrl);
 	$events = json_decode($contents, TRUE);		
 	
 	//loop through the next day's events, and prepare a string to store in a text file
 	$upcomingEvents = "";
+	if (count($events) == 0) {
+		logText('ERROR: no events found for upcoming events. Exiting getUpcomingEvents script.');
+		exit();
+	}
+	
+	//sort events 
+	usort($events, 'sortByStartDateTime');
+	
 	foreach ($events as $scheduledEventInstance) {
 		$scheduledEvent = $scheduledEventInstance['Attributes']['ScheduledEvent'];
 		$event = $scheduledEvent['Attributes']['Event']['Attributes'];
@@ -57,4 +65,7 @@
 	truncateLog();
 
 	
+	function sortByStartDateTime($a, $b) {
+		return ($a['Attributes']['StartDateTime'] > $b['Attributes']['StartDateTime']);
+	}
 ?>
