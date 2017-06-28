@@ -45,6 +45,16 @@
 			$event["hostId"] = $v[7];
 			$event["category"] = $v[8];
 			if (time() >= (int)$event["recordingStartTime"] && time() <= (int)$event["endTime"]) { //the event is active if the current time is after the start time, but before the end time
+				//make a new directory for the show ...streamripper will automatically create the directory
+				$folder = $event["title"]."_".date("Y-m-d",$event["recordingStartTime"]);
+				$folder = str_replace(" ","",$folder); //remove spaces from the folder name
+				if (file_exists($temporaryDestination.$folder."/stream.mp3")) {
+					//file already exists - the script is already running
+					//TODO: we should check to see if the file is locked, and restart recording if it's not. if the file is not locked, we could assume that streamripper
+					//has stopped for some reason
+					logText('stream for ' . $event['title'] . ' is already being recorded at '.$temporaryDestination.$folder.'/stream.mp3');
+					continue;
+				}
 				$activeEvent = true;
 				break;
 			}
@@ -53,22 +63,12 @@
 	
 	//if we didn't find an active event, abandon the script
 	if (!$activeEvent) {
-		logText('no active event, exiting script.');
+		logText('no active event that needs to be recorded, exiting script.');
 		exit();
 	} else {
-		logText('active event, trying to begin recording...');
+		logText('active event that isn\'t being recorded, trying to begin recording...');
 	}
 	
-	//make a new directory for the show ...streamripper will automatically create the directory
-	$folder = $event["title"]."_".date("Y-m-d",$event["recordingStartTime"]);
-	$folder = str_replace(" ","",$folder); //remove spaces from the folder name
-	if (file_exists($temporaryDestination.$folder."/stream.mp3")) {
-		//file already exists - the script is already running
-		//TODO: we should check to see if the file is locked, and restart recording if it's not. if the file is not locked, we could assume that streamripper
-		//has stopped for some reason
-		logText('stream is already being recorded at '.$temporaryDestination.$folder.'/stream.mp3...exiting script.');
-		exit();
-	}
 	//sw 2/14/12 - determine which stream to rip from depending on whether the show is music or news/pa:
 	switch ($event["category"]) {
 		case "Music":
