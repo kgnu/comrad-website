@@ -5,18 +5,8 @@
 	//write the log text at the beginning of the file
 	function logText($text) {
 		global $logFile;
-		//if the log file doesn't exist, create it
-		$contents = '';
-		if (file_exists($logFile)) {
-			$fh = fopen($logFile, 'r+');
-			//read the file's contents to a string
-			while (!feof($fh)) {
-				$contents .= fread($fh, 8192);
-			}
-			fclose($fh);
-		} 
-		$fh = fopen($logFile,'w');
-		fwrite ($fh, '['.date('Y-m-d G:i').'] '.$text."\n".$contents);
+		$fh = fopen($logFile,'a');
+		fwrite ($fh, '['.date('Y-m-d G:i').'] '.$text."\n");
 		fclose($fh);
 	}
 
