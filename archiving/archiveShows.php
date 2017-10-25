@@ -64,6 +64,7 @@
 	//if we didn't find an active event, abandon the script
 	if (!$activeEvent) {
 		logText('no active event that needs to be recorded, exiting script.');
+		truncateLog();
 		exit();
 	} else {
 		logText('active event that isn\'t being recorded, trying to begin recording...');

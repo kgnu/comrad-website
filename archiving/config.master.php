@@ -6,8 +6,8 @@
 	$logFile = "/srv2/www/cgi-bin/archivinglogs/archivingLog.txt";
 	$oldLogFiles = "/srv2/www/cgi-bin/archivinglogs/archivingLog.txt";
 	
-	//the maximum size, in KB, for the log file
-	$logFileMaxSize = 1000;
+	//the maximum number of lines for the log file
+	$logFileMaxLines = 1000;
 	
 	//this file is a text file that stores text data of the upcoming events
 	$upcomingEventsFile = "/srv2/www/kgnu/audioarchives/upcomingEvents.txt"; 

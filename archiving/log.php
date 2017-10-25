@@ -23,6 +23,7 @@
 	//limits the log to 10,000 lines
 	function truncateLog() {
 		global $logFile;
+		global $oldLogFiles;
 		global $logFileMaxLines;
 		if (file_exists($logFile)) {
 			$fh = fopen($logFile, 'r+');
@@ -35,15 +36,13 @@
 			//break out the lines in the file
 			$lines = explode("\n",$contents);
 			$newContent = "";
-			//if the file is longer than our maximum length, rewrite it
+			//if the file is longer than our maximum length, archive it
 			if (count($lines) > $logFileMaxLines) {
-				for ($i = 0; $i < $logFileMaxLines; $i++) {
-					$newContent .= $lines[$i]."\n";
+				$moveTo = $oldLogFiles . '.' . date('Y-m-d');
+				while (file_exists($moveTo)) {
+					$moveTo .= '.1';
 				}
-				//rewrite the file
-				$fh = fopen($logFile, 'w');
-				fwrite($fh,$newContent);
-				fclose($fh);
+				rename($logFile, $moveTo);
 			}
 			
 		}
