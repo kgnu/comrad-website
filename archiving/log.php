@@ -10,17 +10,16 @@
 		if (file_exists($logFile)) {
 			$fh = fopen($logFile, 'r+');
 			//read the file's contents to a string
-			$contents = '';
 			while (!feof($fh)) {
 				$contents .= fread($fh, 8192);
 			}
 			fclose($fh);
-			$fh = fopen($logFile,'w');
-			fwrite ($fh, '['.date('Y-m-d G:i').'] '.$text."\n".$contents);
-			fclose($fh);
-		}
+		} 
+		$fh = fopen($logFile,'w');
+		fwrite ($fh, '['.date('Y-m-d G:i').'] '.$text."\n".$contents);
+		fclose($fh);
 	}
-	
+
 	//limits the log to 10,000 lines
 	function truncateLog() {
 		global $logFile;

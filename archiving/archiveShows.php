@@ -136,7 +136,7 @@
 		// $em = EventManager::getInstance();
 		// $eventInstance = $em->getEventsBetween($event["startTime"], $event["endTime"], "Show");
 		//sw added 8/16/12
-		$url = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . $event['startTime'] . '&end=' . $event['endTime'] . '&types=' . urlencode('["Show"]');
+		$url = 'https://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . $event['startTime'] . '&end=' . $event['endTime'] . '&types=' . urlencode('["Show"]');
 		$contents = file_get_contents($url);
 		$eventInstance = json_decode($contents, TRUE);
 		logText('geteventsbetween: '.$url.': '.print_r($contents, TRUE));
@@ -169,7 +169,7 @@
 				);
 			}
 			
-			$url = 'http://kgnu.org/playlist/ajax/ajaxdbinterface.php';
+			$url = 'https://kgnu.org/playlist/ajax/ajaxdbinterface.php';
 			$data = 'method=save&db=MySql&token=' . $archiveToken . '&params='.json_encode($ei);
 			
 			logText('Preparing CURL request to update file name to ' . $url);

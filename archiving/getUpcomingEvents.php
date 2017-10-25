@@ -21,7 +21,7 @@
 	logText('Started executing getUpcomingEvents.php');
 	
 	//sw changed file on 8/16/12 to pull from geteventsbetween.php API instead of data access layer
-	$apiUrl = 'http://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . time() . '&end=' . (time() + 60*60*24*3); 
+	$apiUrl = 'https://kgnu.org/playlist/ajax/geteventsbetween.php?start=' . time() . '&end=' . (time() + 60*60*24*3); 
 	logText('accesing url at ' . $apiUrl);
 	$contents = file_get_contents($apiUrl);
 	$events = json_decode($contents, TRUE);		

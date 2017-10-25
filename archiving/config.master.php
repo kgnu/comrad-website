@@ -2,9 +2,6 @@
 	//archivingConfig.php - configuration variables for the archiving script
 	//sw 4/21/11
 	
-	//the path to the root of the comrad-dev folder
-	$root = "/home/comrad/comrad-dev/"; 
-	
 	//the path of the log file to store all script output
 	$logFile = "/srv2/www/cgi-bin/archivinglogs/archivingLog.txt";
 	$oldLogFiles = "/srv2/www/cgi-bin/archivinglogs/archivingLog.txt";
